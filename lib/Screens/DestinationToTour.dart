@@ -13,7 +13,7 @@ class DestinationToTour extends StatefulWidget {
   String destinationName;
   String imageUrl;
 
-  DestinationToTour(this.destinationId, this.destinationName, this.imageUrl);
+  DestinationToTour(this.destinationId, this.destinationName, this.imageUrl, {Key? key}) : super(key: key);
 
   @override
   _DestinationToTourState createState() => _DestinationToTourState();
@@ -63,7 +63,10 @@ class _DestinationToTourState extends State<DestinationToTour> {
         child: Column(
           children: [
             AnimatedContainer(
-              height: _showAppbar ? 300.0 : 56.0,
+              height: _showAppbar ? 300.0 : MediaQuery.of(context)
+                  .size
+                  .shortestSide <
+                  550?56.0:75,
               duration: const Duration(milliseconds: 200),
               child: _showAppbar
                   ? Container(
@@ -74,6 +77,7 @@ class _DestinationToTourState extends State<DestinationToTour> {
                               child: CachedNetworkImage(
                                 imageUrl: widget.imageUrl,
                                 height: 270.0,
+                                width: double.infinity,
                                 fit: BoxFit.cover,
                               )),
                           Align(
@@ -159,14 +163,23 @@ class _DestinationToTourState extends State<DestinationToTour> {
                             Navigator.pop(context);
                           },
                         ),
-                        Text(widget.destinationName,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16),maxLines: 1,overflow: TextOverflow.ellipsis,),
-                        Container(height: 50,width: 50,)
+                        Text(widget.destinationName,style:  TextStyle(fontWeight: FontWeight.bold,fontSize: MediaQuery.of(context)
+                            .size
+                            .shortestSide <
+                            550?16:18),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                        const SizedBox(height: 50,width: 50,)
                       ],),
                     ),
             ),
             Expanded(
               child: Container(
-                margin:const EdgeInsets.only(left: 10.0,right: 10.0),
+                margin:EdgeInsets.only(left: MediaQuery.of(context)
+                    .size
+                    .shortestSide <
+                    550?10.0:15.0,right: MediaQuery.of(context)
+                    .size
+                    .shortestSide <
+                    550?10.0:15.0),
                 child: FutureBuilder(
                     future: _destinationTours,
                     builder: (BuildContext ctx,
@@ -175,8 +188,11 @@ class _DestinationToTourState extends State<DestinationToTour> {
                             ? GridView.builder(
                                 controller: _scrollViewController,
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        mainAxisExtent: 250, crossAxisCount: 2),
+                                     SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: MediaQuery.of(context)
+                                            .size
+                                            .shortestSide <
+                                            550?250.0:300.0, crossAxisCount: 2),
                                 itemCount: snapshot.data?.length,
                                 itemBuilder: (BuildContext ctx, index) {
                                   return Container(
@@ -193,11 +209,17 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                                   .data![index].tourImage,
                                               fit: BoxFit.fill,
                                               width: double.infinity,
-                                              height: 150,
+                                              height: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                                  550?150.0:200.0,
                                             ),
                                           ),
                                           SizedBox(
-                                              height: 35,
+                                              height: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                                  550?35.0:45.0,
                                               child: Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -205,11 +227,13 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                                           left: 5.0,
                                                           right: 5.0),
                                                   child: Text(
-                                                    snapshot
-                                                        .data![index].postTitle,
+                                                   snapshot.data![index].postTitle,
                                                     maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
+                                                    style:  TextStyle(
+                                                        fontSize: MediaQuery.of(context)
+                                                            .size
+                                                            .shortestSide <
+                                                            550?12.0:16.0,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                     overflow:
@@ -217,6 +241,7 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                                   ))),
                                           Row(
                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:CrossAxisAlignment.center,
                                             children: [
                                             Flexible(
                                                 child: Padding(
@@ -228,7 +253,10 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                                             .tourPrice[0],
                                                     style:  TextStyle(
                                                         color: AppTheme.pink,
-                                                        fontSize: 12.0,
+                                                        fontSize: MediaQuery.of(context)
+                                                            .size
+                                                            .shortestSide <
+                                                            550?12.0:16.0,
                                                         fontWeight: FontWeight.bold),
                                                     overflow: TextOverflow.ellipsis,
 
@@ -236,9 +264,15 @@ class _DestinationToTourState extends State<DestinationToTour> {
 
                                                 )),
                                               Container(
-                                                height: 25,
-                                                width:80,
-                                                margin: EdgeInsets.only(top: 10),
+                                                height: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                    550?25:35.0,
+                                                width:MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                    550?80:110.0,
+                                                margin: const EdgeInsets.only(top: 10),
                                                 child: TextButton(
                                                   onPressed: () {
                                                     Navigator.push(

@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:lonelydubai/Controllers/AllToursController.dart';
 import 'package:lonelydubai/Screens/TourDetailsScreen.dart';
 import 'package:lottie/lottie.dart';
@@ -39,11 +36,11 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        toolbarHeight: 56.0,
+        toolbarHeight:MediaQuery.of(context).size.shortestSide < 550? 56.0:75,
         centerTitle: true,
-        title: const Text(
+        title:  Text(
           'Tours',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: MediaQuery.of(context).size.shortestSide < 550?18:25),
         ),
       ),
       body: SafeArea(
@@ -57,7 +54,7 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                         builder: (context) => const SearchScreen()));
               },
               child: Card(
-                  margin: EdgeInsets.only(left: 20, right: 20.0, bottom: 20.0),
+                  margin: const EdgeInsets.only(left: 20, right: 20.0, bottom: 20.0),
                   color: Colors.white,
                   elevation: 1.0,
                   shape: RoundedRectangleBorder(
@@ -91,7 +88,36 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                         child: Lottie.asset('assets/animations/loading.json',
                             height: 100.0)),
                   )
-                : Expanded(
+                : _allToursController.errorOccur.value?
+            Expanded(
+              child: Center(
+                child: Container(
+                  height: MediaQuery.of(context).size.shortestSide < 550
+                      ? 25
+                      : 35.0,
+                  width: MediaQuery.of(context).size.shortestSide < 550
+                      ? 80
+                      : 110.0,
+                  margin: const EdgeInsets.only(top: 10),
+                  child: TextButton(
+                    onPressed: () {
+                      _allToursController.allDestinations(1,100);
+                    },
+                    child: const Text(
+                      "Retry",
+                      maxLines: 1,
+                      
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    style: TextButton.styleFrom(
+                        padding: const EdgeInsets.only(
+                            left: 5.0, right: 5.0),
+                        primary: Colors.white,
+                        backgroundColor: AppTheme.pink),
+                  ),
+                ),
+              ),
+            ): Expanded(
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       physics: const BouncingScrollPhysics(),
@@ -99,9 +125,9 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
 
-                          margin: const EdgeInsets.only(
+                          margin:  const EdgeInsets.only(
                               top: 5.0, bottom: 5.0, right: 20.0, left: 20.0),
-                          height: 350,
+                          height:  MediaQuery.of(context).size.shortestSide < 550?350:450,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -110,7 +136,7 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                                   imageUrl: _allToursController
                                       .allToursList[index].tourImage,
                                   fit: BoxFit.cover,
-                                  height: 200,
+                                  height: MediaQuery.of(context).size.shortestSide < 550?200:280,
                                   width: double.infinity,
                                 ),
                                 borderRadius: BorderRadius.circular(5.0),
@@ -118,15 +144,15 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                               Flexible(
                                   child: Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 5.0, top: 5.0),
+                                    const EdgeInsets.only(left: 5.0, top: 5.0,bottom: 5.0),
                                 child: Text(
                                   _allToursController
                                       .allToursList[index].postTitle,
-                                  style: const TextStyle(
+                                  style:  TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      fontSize: MediaQuery.of(context).size.shortestSide < 550? 16:20),
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
+                                  maxLines: MediaQuery.of(context).size.shortestSide < 550?2:1,
                                 ),
                               )),
                               Padding(
@@ -136,6 +162,7 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                                   _allToursController.allToursList[index].postExcerpt,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 3,
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.shortestSide < 550?14:17)
                                 ),
                               ),
                               Row(
@@ -149,14 +176,14 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                                           _allToursController
                                               .allToursList[index].tourPrice[0],
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: MediaQuery.of(context).size.shortestSide < 550?14:17,
                                           fontWeight: FontWeight.bold,
                                           color: AppTheme.pink),
                                     ),
                                   ),
                                   Container(
-                                    height: 30,
-                                    margin: EdgeInsets.only(top: 10),
+                                    height: MediaQuery.of(context).size.shortestSide < 550?30:35,
+                                    margin: const EdgeInsets.only(top: 10),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -164,10 +191,10 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                                             MaterialPageRoute(
                                             builder: (context) => TourDetails(_allToursController.allToursList[index])));
                                       },
-                                      child: const Text("Book Now"),
+                                      child:  Text("Book Now",style: TextStyle(fontSize: MediaQuery.of(context).size.shortestSide < 550? 14.0:17),),
                                       style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.only(
-                                              left: 15.0, right: 15.0),
+                                          padding:  EdgeInsets.only(
+                                              left:MediaQuery.of(context).size.shortestSide < 550? 15.0:20, right: MediaQuery.of(context).size.shortestSide < 550? 15.0:20),
                                           primary: Colors.white,
                                           backgroundColor: AppTheme.pink),
                                     ),

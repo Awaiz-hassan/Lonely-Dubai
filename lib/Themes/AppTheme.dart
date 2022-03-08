@@ -40,4 +40,6 @@ class AppTheme {
   static Color pink = const Color(0XFFff4d54);
   static Color black = const Color(0XFF191922);
   static Color charcoal = const Color(0XFF36454F);
+  static Color darkBlue = const Color(0XFF001b3a);
+  static Color darkBackground = const Color(0XFF001b3a);
 }

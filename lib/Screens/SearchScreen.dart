@@ -48,7 +48,6 @@ class _SearchScreenState extends State<SearchScreen> {
         setState(() {
           loading = false;
           _searchRes = allToursFromJson(jsonString);
-          print(_searchRes);
         });
       }
     } on Exception {
@@ -91,9 +90,10 @@ class _SearchScreenState extends State<SearchScreen> {
               Image.asset(
                 "assets/images/logo.png",
                 color: Colors.black,
-                height: 50,
+                height:
+                    MediaQuery.of(context).size.shortestSide < 550 ? 50 : 60,
               ),
-              Container(
+              const SizedBox(
                 height: 50,
                 width: 50,
               )
@@ -154,7 +154,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         return Container(
                           margin: const EdgeInsets.only(
                               top: 5.0, bottom: 5.0, right: 20.0, left: 20.0),
-                          height: 350,
+                          height: MediaQuery.of(context).size.shortestSide < 550
+                              ? 350
+                              : 450,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -162,7 +164,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: CachedNetworkImage(
                                   imageUrl: _searchRes[index].tourImage,
                                   fit: BoxFit.cover,
-                                  height: 200,
+                                  height:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 200
+                                          : 280,
                                   width: double.infinity,
                                 ),
                                 borderRadius: BorderRadius.circular(5.0),
@@ -170,24 +176,38 @@ class _SearchScreenState extends State<SearchScreen> {
                               Flexible(
                                   child: Padding(
                                 padding:
-                                    const EdgeInsets.only(left: 5.0, top: 5.0),
+                                    const EdgeInsets.only(left: 5.0, top: 5.0,bottom: 5.0),
                                 child: Text(
                                   _searchRes[index].postTitle,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                              550
+                                          ? 16
+                                          : 20),
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
+                                  maxLines:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 2
+                                          : 1,
                                 ),
                               )),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 5.0, right: 5.0, top: 3.0),
-                                child: Text(
-                                  _searchRes[index].postExcerpt,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                ),
+                                child: Text(_searchRes[index].postExcerpt,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                        fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 14
+                                            : 17)),
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -199,25 +219,55 @@ class _SearchScreenState extends State<SearchScreen> {
                                       "AED    " +
                                           _searchRes[index].tourPrice[0],
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .shortestSide <
+                                                  550
+                                              ? 14
+                                              : 17,
                                           fontWeight: FontWeight.bold,
                                           color: AppTheme.pink),
                                     ),
                                   ),
                                   Container(
-                                    height: 30,
-                                    margin: EdgeInsets.only(top: 10),
+                                    height: MediaQuery.of(context)
+                                                .size
+                                                .shortestSide <
+                                            550
+                                        ? 30
+                                        : 35,
+                                    margin: const EdgeInsets.only(top: 10),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>  TourDetails(_searchRes[index])));
+                                                builder: (context) =>
+                                                    TourDetails(
+                                                        _searchRes[index])));
                                       },
-                                      child: const Text("Book Now"),
+                                      child: Text("Book Now",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 14.0
+                                                  : 17)),
                                       style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.only(
-                                              left: 15.0, right: 15.0),
+                                          padding: EdgeInsets.only(
+                                              left: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 15.0
+                                                  : 20,
+                                              right: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 15.0
+                                                  : 20),
                                           primary: Colors.white,
                                           backgroundColor: AppTheme.pink),
                                     ),

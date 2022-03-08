@@ -35,7 +35,7 @@ class _MainTabScreenState extends State<MainTabScreen>
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(5.0),
         child: TabBar(
-          indicator: DotIndicator(),
+          indicator: const DotIndicator(),
           controller: _tabController,
           onTap: (index) {
             setState(() {

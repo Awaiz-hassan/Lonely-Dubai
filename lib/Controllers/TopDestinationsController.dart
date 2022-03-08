@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
-import 'package:lonelydubai/HttpClient/HttpClient.dart';
 import 'package:lonelydubai/Model/TopDestination.dart';
+import 'package:http/http.dart' as http;
 
-class TopDestinationsController extends GetxController{
+class TopDestinationsController extends GetxController {
   var topDestinationList = <TopDestination>[].obs;
   var isLoading = true.obs;
+  var errorOccur = false.obs;
 
   @override
   void onInit() {
@@ -13,12 +14,24 @@ class TopDestinationsController extends GetxController{
   }
 
   void fetchTopDestinations() async {
+    var client = http.Client();
+
+    isLoading(true);
+    String url = "https://lonelydubai.com/wp-json/lonely/v2/top_destination";
     try {
-      isLoading(true);
-      var topDestinations = await HttpClient.getTopDestination();
-      topDestinationList.value = topDestinations;
-    } finally {
+      var response = await client.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        topDestinationList.value = topDestinationFromJson(jsonString);
+        isLoading(false);
+        errorOccur(false);
+      } else {
+        isLoading(false);
+        errorOccur(true);
+      }
+    } on Exception {
       isLoading(false);
+      errorOccur(true);
     }
   }
 }

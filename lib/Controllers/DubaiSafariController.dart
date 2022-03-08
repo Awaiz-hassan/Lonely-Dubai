@@ -1,24 +1,38 @@
 import 'package:get/get.dart';
-import 'package:lonelydubai/HttpClient/HttpClient.dart';
 import 'package:lonelydubai/Model/AllTours.dart';
+import 'package:http/http.dart' as http;
 
-class DubaiSafariController extends GetxController{
+class DubaiSafariController extends GetxController {
   var dubaiSafariToursList = <AllTours>[].obs;
   var isLoading = true.obs;
+  var errorOccur = false.obs;
 
   @override
   void onInit() {
-    dubaiSafariTours();
+    dubaiSafariTours(294);
     super.onInit();
   }
 
-  void dubaiSafariTours() async {
+  void dubaiSafariTours(int destination_id) async {
+    var client = http.Client();
+
+    String url =
+        "https://lonelydubai.com/wp-json/lonely/v2/get_dest_tours?dest_id=$destination_id";
+    isLoading(true);
     try {
-      isLoading(true);
-      var dubaiSafariTours = await HttpClient.getToursByDestination(294);
-      dubaiSafariToursList.value = dubaiSafariTours;
-    } finally {
+      var response = await client.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        dubaiSafariToursList.value = allToursFromJson(jsonString);
+        isLoading(false);
+        errorOccur(false);
+      } else {
+        isLoading(false);
+        errorOccur(true);
+      }
+    } on Exception {
       isLoading(false);
+      errorOccur(true);
     }
   }
 }

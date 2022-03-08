@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:lonelydubai/Controllers/AllDestinationsController.dart';
 import 'package:lonelydubai/Screens/DestinationToTour.dart';
 import 'package:lonelydubai/Screens/SearchScreen.dart';
@@ -39,25 +37,30 @@ class _DestinationsScreenState extends State<DestinationsScreen>
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        toolbarHeight: 56.0,
+        toolbarHeight:
+            MediaQuery.of(context).size.shortestSide < 550 ? 56.0 : 75,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Destinations',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize:
+                  MediaQuery.of(context).size.shortestSide < 550 ? 18 : 25),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const SearchScreen()));
               },
               child: Card(
-                  margin: EdgeInsets.only(left: 20, right: 20.0, bottom: 20.0),
+                  margin: const EdgeInsets.only(left: 20, right: 20.0, bottom: 20.0),
                   color: Colors.white,
                   elevation: 1.0,
                   shape: RoundedRectangleBorder(
@@ -77,7 +80,8 @@ class _DestinationsScreenState extends State<DestinationsScreen>
                             ),
                             Text(
                               "   Where you want to go?",
-                              style: TextStyle(fontSize: 15, color: Colors.grey),
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.grey),
                             ),
                           ],
                         ),
@@ -91,74 +95,137 @@ class _DestinationsScreenState extends State<DestinationsScreen>
                         child: Lottie.asset('assets/animations/loading.json',
                             height: 100.0)),
                   )
-                : Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount:
-                          _allDestinationsController.allDestinationsList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DestinationToTour(
-                                        _allDestinationsController
-                                            .allDestinationsList[index].id,
-                                        _allDestinationsController
-                                            .allDestinationsList[index]
-                                            .postTitle,_allDestinationsController.allDestinationsList[index].destinationImage)));
-                          },
+                : _allDestinationsController.errorOccur.value
+                    ? Expanded(
+                      child: Center(
                           child: Container(
-                            margin: const EdgeInsets.only(
-                                top: 5.0, bottom: 5.0, right: 20.0, left: 20.0),
-                            height: 300,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    height: 200,
-                                    width: double.infinity,
-                                    imageUrl: _allDestinationsController
-                                        .allDestinationsList[index]
-                                        .destinationImage,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                Flexible(
-                                    child: Padding(
+                            height: MediaQuery.of(context).size.shortestSide < 550
+                                ? 25
+                                : 35.0,
+                            width: MediaQuery.of(context).size.shortestSide < 550
+                                ? 80
+                                : 110.0,
+                            margin:const EdgeInsets.only(top: 10),
+                            child: TextButton(
+                              onPressed: () {
+                                _allDestinationsController.allDestinations(1, 20);
+                              },
+                              child: const Text(
+                                "Retry",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              style: TextButton.styleFrom(
                                   padding: const EdgeInsets.only(
-                                      left: 5.0, top: 5.0),
-                                  child: Text(
-                                    _allDestinationsController
-                                        .allDestinationsList[index].postTitle,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                )),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 5.0, right: 5.0, top: 3.0),
-                                  child: Text(
-                                    _allDestinationsController
-                                        .allDestinationsList[index].postExcerpt,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                  ),
-                                )
-                              ],
+                                      left: 5.0, right: 5.0),
+                                  primary: Colors.white,
+                                  backgroundColor: AppTheme.pink),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ))
+                        ),
+                    )
+                    : Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: _allDestinationsController
+                              .allDestinationsList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DestinationToTour(
+                                            _allDestinationsController
+                                                .allDestinationsList[index].id,
+                                            _allDestinationsController
+                                                .allDestinationsList[index]
+                                                .postTitle,
+                                            _allDestinationsController
+                                                .allDestinationsList[index]
+                                                .destinationImage)));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    top: 5.0,
+                                    bottom: 5.0,
+                                    right: 20.0,
+                                    left: 20.0),
+                                height:
+                                    MediaQuery.of(context).size.shortestSide <
+                                            550
+                                        ? 300
+                                        : 400,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        height: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 200
+                                            : 280,
+                                        width: double.infinity,
+                                        imageUrl: _allDestinationsController
+                                            .allDestinationsList[index]
+                                            .destinationImage,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    Flexible(
+                                        child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5.0, top: 5.0, bottom: 5.0),
+                                      child: Text(
+                                        _allDestinationsController
+                                            .allDestinationsList[index]
+                                            .postTitle,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .shortestSide <
+                                                    550
+                                                ? 16
+                                                : 20),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 2
+                                            : 1,
+                                      ),
+                                    )),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5.0, right: 5.0, top: 3.0),
+                                      child: Text(
+                                        _allDestinationsController
+                                            .allDestinationsList[index]
+                                            .postExcerpt,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .shortestSide <
+                                                    550
+                                                ? 14
+                                                : 17),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ))
           ],
         ),
       ),
