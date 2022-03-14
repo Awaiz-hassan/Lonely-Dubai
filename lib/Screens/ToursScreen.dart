@@ -16,7 +16,8 @@ class ToursScreen extends StatefulWidget {
   _ToursScreenState createState() => _ToursScreenState();
 }
 
-class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClientMixin {
+class _ToursScreenState extends State<ToursScreen>
+    with AutomaticKeepAliveClientMixin {
   bool isScrollingDown = false;
 
   @override
@@ -36,25 +37,31 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        toolbarHeight:MediaQuery.of(context).size.shortestSide < 550? 56.0:75,
+        toolbarHeight:
+            MediaQuery.of(context).size.shortestSide < 550 ? 56.0 : 75,
         centerTitle: true,
-        title:  Text(
+        title: Text(
           'Tours',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: MediaQuery.of(context).size.shortestSide < 550?18:25),
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize:
+                  MediaQuery.of(context).size.shortestSide < 550 ? 18 : 25),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const SearchScreen()));
               },
               child: Card(
-                  margin: const EdgeInsets.only(left: 20, right: 20.0, bottom: 20.0),
+                  margin: const EdgeInsets.only(
+                      left: 20, right: 20.0, bottom: 20.0),
                   color: Colors.white,
                   elevation: 1.0,
                   shape: RoundedRectangleBorder(
@@ -74,7 +81,8 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                             ),
                             Text(
                               "   Where you want to go?",
-                              style: TextStyle(fontSize: 15, color: Colors.grey),
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.grey),
                             ),
                           ],
                         ),
@@ -88,125 +96,189 @@ class _ToursScreenState extends State<ToursScreen> with AutomaticKeepAliveClient
                         child: Lottie.asset('assets/animations/loading.json',
                             height: 100.0)),
                   )
-                : _allToursController.errorOccur.value?
-            Expanded(
-              child: Center(
-                child: Container(
-                  height: MediaQuery.of(context).size.shortestSide < 550
-                      ? 25
-                      : 35.0,
-                  width: MediaQuery.of(context).size.shortestSide < 550
-                      ? 80
-                      : 110.0,
-                  margin: const EdgeInsets.only(top: 10),
-                  child: TextButton(
-                    onPressed: () {
-                      _allToursController.allDestinations(1,100);
-                    },
-                    child: const Text(
-                      "Retry",
-                      maxLines: 1,
-                      
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    style: TextButton.styleFrom(
-                        padding: const EdgeInsets.only(
-                            left: 5.0, right: 5.0),
-                        primary: Colors.white,
-                        backgroundColor: AppTheme.pink),
-                  ),
-                ),
-              ),
-            ): Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: _allToursController.allToursList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-
-                          margin:  const EdgeInsets.only(
-                              top: 5.0, bottom: 5.0, right: 20.0, left: 20.0),
-                          height:  MediaQuery.of(context).size.shortestSide < 550?350:450,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                child: CachedNetworkImage(
-                                  imageUrl: _allToursController
-                                      .allToursList[index].tourImage,
-                                  fit: BoxFit.cover,
-                                  height: MediaQuery.of(context).size.shortestSide < 550?200:280,
-                                  width: double.infinity,
-                                ),
-                                borderRadius: BorderRadius.circular(5.0),
+                : _allToursController.errorOccur.value
+                    ? Expanded(
+                        child: Center(
+                          child: Container(
+                            height:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 25
+                                    : 35.0,
+                            width:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 80
+                                    : 110.0,
+                            margin: const EdgeInsets.only(top: 10),
+                            child: TextButton(
+                              onPressed: () {
+                                _allToursController.allDestinations(1, 100);
+                              },
+                              child: const Text(
+                                "Retry",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              Flexible(
-                                  child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5.0, top: 5.0,bottom: 5.0),
-                                child: Text(
-                                  _allToursController
-                                      .allToursList[index].postTitle,
-                                  style:  TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context).size.shortestSide < 550? 16:20),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: MediaQuery.of(context).size.shortestSide < 550?2:1,
-                                ),
-                              )),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 5.0, right: 5.0, top: 3.0),
-                                child: Text(
-                                  _allToursController.allToursList[index].postExcerpt,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.shortestSide < 550?14:17)
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.only(
+                                      left: 5.0, right: 5.0),
+                                  primary: Colors.white,
+                                  backgroundColor: AppTheme.pink),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: _allToursController.allToursList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              margin: const EdgeInsets.only(
+                                  top: 5.0,
+                                  bottom: 5.0,
+                                  right: 20.0,
+                                  left: 20.0),
+                              height:
+                                  MediaQuery.of(context).size.shortestSide < 550
+                                      ? 350
+                                      : 450,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 5.0),
-                                    child: Text(
-                                      "AED    " +
-                                          _allToursController
-                                              .allToursList[index].tourPrice[0],
-                                      style: TextStyle(
-                                          fontSize: MediaQuery.of(context).size.shortestSide < 550?14:17,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppTheme.pink),
+                                  ClipRRect(
+                                    child: CachedNetworkImage(
+                                      imageUrl: _allToursController
+                                          .allToursList[index].tourImage,
+                                      fit: BoxFit.cover,
+                                      height: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                              550
+                                          ? 200
+                                          : 280,
+                                      width: double.infinity,
                                     ),
+                                    borderRadius: BorderRadius.circular(5.0),
                                   ),
-                                  Container(
-                                    height: MediaQuery.of(context).size.shortestSide < 550?30:35,
-                                    margin: const EdgeInsets.only(top: 10),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                            builder: (context) => TourDetails(_allToursController.allToursList[index])));
-                                      },
-                                      child:  Text("Book Now",style: TextStyle(fontSize: MediaQuery.of(context).size.shortestSide < 550? 14.0:17),),
-                                      style: TextButton.styleFrom(
-                                          padding:  EdgeInsets.only(
-                                              left:MediaQuery.of(context).size.shortestSide < 550? 15.0:20, right: MediaQuery.of(context).size.shortestSide < 550? 15.0:20),
-                                          primary: Colors.white,
-                                          backgroundColor: AppTheme.pink),
+                                  Flexible(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5.0, top: 5.0, bottom: 5.0),
+                                    child: Text(
+                                      _allToursController
+                                          .allToursList[index].postTitle,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .shortestSide <
+                                                  550
+                                              ? 16
+                                              : 20),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                              550
+                                          ? 2
+                                          : 1,
                                     ),
+                                  )),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5.0, right: 5.0, top: 3.0),
+                                    child: Text(
+                                        _allToursController
+                                            .allToursList[index].postExcerpt,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .shortestSide <
+                                                    550
+                                                ? 14
+                                                : 17)),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
+                                        child: Text(
+                                          "AED    " +
+                                              _allToursController
+                                                  .allToursList[index]
+                                                  .tourPrice[0],
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 14
+                                                  : 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppTheme.pink),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 30
+                                            : 35,
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TourDetails(
+                                                            _allToursController
+                                                                    .allToursList[
+                                                                index])));
+                                          },
+                                          child: Text(
+                                            "Book Now",
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                            .size
+                                                            .shortestSide <
+                                                        550
+                                                    ? 14.0
+                                                    : 17),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                              padding: EdgeInsets.only(
+                                                  left: MediaQuery.of(context)
+                                                              .size
+                                                              .shortestSide <
+                                                          550
+                                                      ? 15.0
+                                                      : 20,
+                                                  right: MediaQuery.of(context)
+                                                              .size
+                                                              .shortestSide <
+                                                          550
+                                                      ? 15.0
+                                                      : 20),
+                                              primary: Colors.white,
+                                              backgroundColor: AppTheme.pink),
+                                        ),
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ))
+                              ),
+                            );
+                          },
+                        ),
+                      ))
           ],
         ),
       ),

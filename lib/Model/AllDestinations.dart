@@ -4,9 +4,12 @@
 
 import 'dart:convert';
 
-List<AllDestinations> allDestinationsFromJson(String str) => List<AllDestinations>.from(json.decode(str).map((x) => AllDestinations.fromJson(x)));
+List<AllDestinations> allDestinationsFromJson(String str) =>
+    List<AllDestinations>.from(
+        json.decode(str).map((x) => AllDestinations.fromJson(x)));
 
-String allDestinationsToJson(List<AllDestinations> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String allDestinationsToJson(List<AllDestinations> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AllDestinations {
   AllDestinations({
@@ -33,29 +36,32 @@ class AllDestinations {
   String destinationImage;
   List<List<String>> destinationTour;
 
-  factory AllDestinations.fromJson(Map<String, dynamic> json) => AllDestinations(
-    id: json["ID"],
-    postDate: DateTime.parse(json["post_date"]),
-    postContent: json["post_content"],
-    postTitle: json["post_title"],
-    postExcerpt: json["post_excerpt"],
-    postPublish: json["post_publish"],
-    postName: json["post_name"],
-    guid: json["guid"],
-    destinationImage: json["destination_image"],
-    destinationTour: List<List<String>>.from(json["destination_tour"].map((x) => List<String>.from(x.map((x) => x)))),
-  );
+  factory AllDestinations.fromJson(Map<String, dynamic> json) =>
+      AllDestinations(
+        id: json["ID"],
+        postDate: DateTime.parse(json["post_date"]),
+        postContent: json["post_content"],
+        postTitle: json["post_title"],
+        postExcerpt: json["post_excerpt"],
+        postPublish: json["post_publish"],
+        postName: json["post_name"],
+        guid: json["guid"],
+        destinationImage: json["destination_image"],
+        destinationTour: List<List<String>>.from(json["destination_tour"]
+            .map((x) => List<String>.from(x.map((x) => x)))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "ID": id,
-    "post_date": postDate.toIso8601String(),
-    "post_content": postContent,
-    "post_title": postTitle,
-    "post_excerpt": postExcerpt,
-    "post_publish": postPublish,
-    "post_name": postName,
-    "guid": guid,
-    "destination_image": destinationImage,
-    "destination_tour": List<dynamic>.from(destinationTour.map((x) => List<dynamic>.from(x.map((x) => x)))),
-  };
+        "ID": id,
+        "post_date": postDate.toIso8601String(),
+        "post_content": postContent,
+        "post_title": postTitle,
+        "post_excerpt": postExcerpt,
+        "post_publish": postPublish,
+        "post_name": postName,
+        "guid": guid,
+        "destination_image": destinationImage,
+        "destination_tour": List<dynamic>.from(
+            destinationTour.map((x) => List<dynamic>.from(x.map((x) => x)))),
+      };
 }

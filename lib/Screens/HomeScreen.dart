@@ -707,8 +707,8 @@ class _DesertSafariState extends State<DesertSafariTour> {
                 )
               : _dubaiSafariController.errorOccur.value
                   ? SizedBox(
-            height: 300,
-                    child: Center(
+                      height: 300,
+                      child: Center(
                         child: Container(
                           height: MediaQuery.of(context).size.shortestSide < 550
                               ? 25
@@ -727,14 +727,14 @@ class _DesertSafariState extends State<DesertSafariTour> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             style: TextButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.only(left: 5.0, right: 5.0),
+                                padding: const EdgeInsets.only(
+                                    left: 5.0, right: 5.0),
                                 primary: Colors.white,
                                 backgroundColor: AppTheme.pink),
                           ),
                         ),
                       ),
-                  )
+                    )
                   : ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,

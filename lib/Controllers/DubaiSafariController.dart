@@ -16,8 +16,7 @@ class DubaiSafariController extends GetxController {
   void dubaiSafariTours(int destination_id) async {
     var client = http.Client();
 
-    String url =
-        "https://lonelydubai.com/wp-json/lonely/v2/get_dest_tours?dest_id=$destination_id";
+    String url = "https://lonelydubai.com/wp-json/lonely/v2/get_dest_tours?dest_id=$destination_id";
     isLoading(true);
     try {
       var response = await client.get(Uri.parse(url));

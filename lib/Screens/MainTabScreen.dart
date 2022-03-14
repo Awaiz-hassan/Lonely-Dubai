@@ -29,7 +29,7 @@ class _MainTabScreenState extends State<MainTabScreen>
     return Scaffold(
       body: TabBarView(
         controller: _tabController,
-        physics:const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: const [HomeScreen(), DestinationsScreen(), ToursScreen()],
       ),
       bottomNavigationBar: Container(
@@ -43,9 +43,30 @@ class _MainTabScreenState extends State<MainTabScreen>
             });
           },
           tabs: [
-            tabItem(SvgPicture.asset("assets/icons/icon_home.svg",height: 20,color: Colors.grey,), "Home", 0),
-            tabItem(SvgPicture.asset("assets/icons/icon_tours.svg",height: 20,color: Colors.grey,), "Destinations", 1),
-            tabItem(SvgPicture.asset("assets/icons/icon_destination.svg",height: 25,color: Colors.grey,), "Tours", 2),
+            tabItem(
+                SvgPicture.asset(
+                  "assets/icons/icon_home.svg",
+                  height: 20,
+                  color: Colors.grey,
+                ),
+                "Home",
+                0),
+            tabItem(
+                SvgPicture.asset(
+                  "assets/icons/icon_tours.svg",
+                  height: 20,
+                  color: Colors.grey,
+                ),
+                "Destinations",
+                1),
+            tabItem(
+                SvgPicture.asset(
+                  "assets/icons/icon_destination.svg",
+                  height: 25,
+                  color: Colors.grey,
+                ),
+                "Tours",
+                2),
           ],
           labelColor: AppTheme.pink,
           unselectedLabelColor: Colors.grey,
@@ -54,12 +75,10 @@ class _MainTabScreenState extends State<MainTabScreen>
     );
   }
 
-
-  Widget tabItem(SvgPicture icon,String text,int itemIndex){
-    if(selectedIndex==itemIndex){
+  Widget tabItem(SvgPicture icon, String text, int itemIndex) {
+    if (selectedIndex == itemIndex) {
       return Tab(text: text);
-    }
-    else{
+    } else {
       return Tab(icon: icon);
     }
   }

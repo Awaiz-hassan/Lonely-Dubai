@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lonelydubai/Themes/AppTheme.dart';
-
 class DotIndicator extends Decoration {
   const DotIndicator({
     this.color = const Color(0XFFff4d54),

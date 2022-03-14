@@ -56,10 +56,11 @@ class _TourDetailsState extends State<TourDetails> {
         child: Column(
           children: [
             AnimatedContainer(
-              height: _showAppbar ? 270.0 :  MediaQuery.of(context)
-                  .size
-                  .shortestSide <
-                  550? 56.0:75,
+              height: _showAppbar
+                  ? 270.0
+                  : MediaQuery.of(context).size.shortestSide < 550
+                      ? 56.0
+                      : 75,
               duration: const Duration(milliseconds: 200),
               child: _showAppbar
                   ? Container(
@@ -107,11 +108,13 @@ class _TourDetailsState extends State<TourDetails> {
                           Expanded(
                             child: Text(
                               widget.tourDetails.postTitle,
-                              style:  TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context)
-                                  .size
-                                  .shortestSide <
-                                  550?16:20),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 16
+                                          : 20),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -146,53 +149,60 @@ class _TourDetailsState extends State<TourDetails> {
                     children: [
                       Row(
                         children: [
-                           Padding(
+                          Padding(
                             padding:
                                 const EdgeInsets.only(left: 15.0, top: 8.0),
                             child: Text(
                               "from",
-                              style: TextStyle(fontSize: MediaQuery.of(context)
-                                  .size
-                                  .shortestSide <
-                                  550?15:18),
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 18),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0, top: 8.0),
                             child: Text(
                               "AED " + widget.tourDetails.tourPrice[0],
-                              style:
-                                  TextStyle(fontSize: MediaQuery.of(context)
-                                      .size
-                                      .shortestSide <
-                                      550?18:22, color: AppTheme.pink),
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 18
+                                          : 22,
+                                  color: AppTheme.pink),
                             ),
                           ),
                         ],
                       ),
                       Container(
-                        height: MediaQuery.of(context)
-                            .size
-                            .shortestSide <
-                            550?30:35,
+                        height: MediaQuery.of(context).size.shortestSide < 550
+                            ? 30
+                            : 35,
                         margin: const EdgeInsets.only(top: 20, right: 15),
                         child: TextButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>  BookTour(widget.tourDetails)));
+                                    builder: (context) =>
+                                        BookTour(widget.tourDetails)));
                           },
                           child: const Text("Book Now"),
                           style: TextButton.styleFrom(
-                              padding:  EdgeInsets.only(
-                                  left: MediaQuery.of(context)
-                                      .size
-                                      .shortestSide <
-                                      550?15:20, right: MediaQuery.of(context)
-                                  .size
-                                  .shortestSide <
-                                  550?15:20),
+                              padding: EdgeInsets.only(
+                                  left:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 20,
+                                  right:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 20),
                               primary: Colors.white,
                               backgroundColor: AppTheme.pink),
                         ),
@@ -216,16 +226,17 @@ class _TourDetailsState extends State<TourDetails> {
                       ],
                     ),
                   ),
-
-                   Padding(
-                    padding: const EdgeInsets.only(left: 20.0, top: 0.0, bottom: 0.0),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, top: 0.0, bottom: 0.0),
                     child: Text(
                       "Details ",
-                      style:
-                          TextStyle(fontSize: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?18:20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 18
+                                  : 20,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
@@ -233,31 +244,35 @@ class _TourDetailsState extends State<TourDetails> {
                         left: 20.0, top: 5.0, right: 20.0, bottom: 10.0),
                     child: Text(
                       widget.tourDetails.postExcerpt,
-                      style: TextStyle(fontSize: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?15:18),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 15
+                                  : 18),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 5.0),
+                    padding: const EdgeInsets.only(
+                        left: 20.0, top: 5.0, bottom: 5.0),
                     child: Text(
                       "Instructions",
-                      style:
-                          TextStyle(fontSize: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?18:22, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 18
+                                  : 22,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   Card(
                     margin: const EdgeInsets.only(
                         left: 20.0, right: 20.0, top: 8.0),
                     child: Container(
-                      constraints:  BoxConstraints(minHeight: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?50:55),
+                      constraints: BoxConstraints(
+                          minHeight:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 50
+                                  : 55),
                       child: Row(
                         children: [
                           Container(
@@ -267,9 +282,11 @@ class _TourDetailsState extends State<TourDetails> {
                                 "Departure ",
                                 style: TextStyle(
                                     fontSize: MediaQuery.of(context)
-                                        .size
-                                        .shortestSide <
-                                        550?16:18,
+                                                .size
+                                                .shortestSide <
+                                            550
+                                        ? 16
+                                        : 18,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.charcoal),
                               )),
@@ -278,10 +295,13 @@ class _TourDetailsState extends State<TourDetails> {
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
                               widget.tourDetails.tourDeparture[0],
-                              style: TextStyle(color: Colors.grey,fontSize: MediaQuery.of(context)
-                                  .size
-                                  .shortestSide <
-                                  550?15:18),
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 18),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -294,10 +314,11 @@ class _TourDetailsState extends State<TourDetails> {
                     margin: const EdgeInsets.only(
                         left: 20.0, right: 20.0, top: 8.0),
                     child: Container(
-                      constraints: BoxConstraints(minHeight: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?50:55),
+                      constraints: BoxConstraints(
+                          minHeight:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 50
+                                  : 55),
                       child: Row(
                         children: [
                           Container(
@@ -307,9 +328,11 @@ class _TourDetailsState extends State<TourDetails> {
                                 "Departure Time",
                                 style: TextStyle(
                                     fontSize: MediaQuery.of(context)
-                                        .size
-                                        .shortestSide <
-                                        550?16:18,
+                                                .size
+                                                .shortestSide <
+                                            550
+                                        ? 16
+                                        : 18,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.charcoal),
                               )),
@@ -322,10 +345,13 @@ class _TourDetailsState extends State<TourDetails> {
                                 bottom: 10.0),
                             child: Text(
                               widget.tourDetails.tourDepartureTime[0],
-                              style:  TextStyle(color: Colors.grey,fontSize: MediaQuery.of(context)
-                                  .size
-                                  .shortestSide <
-                                  550?15:18),
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 18),
                             ),
                           ))
                         ],
@@ -336,11 +362,11 @@ class _TourDetailsState extends State<TourDetails> {
                     margin: const EdgeInsets.only(
                         left: 20.0, right: 20.0, top: 8.0),
                     child: Container(
-                      constraints:
-                      BoxConstraints(minHeight: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?50:55),
+                      constraints: BoxConstraints(
+                          minHeight:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 50
+                                  : 55),
                       child: Row(
                         children: [
                           Container(
@@ -350,9 +376,11 @@ class _TourDetailsState extends State<TourDetails> {
                                 "Included",
                                 style: TextStyle(
                                     fontSize: MediaQuery.of(context)
-                                        .size
-                                        .shortestSide <
-                                        550?16:18,
+                                                .size
+                                                .shortestSide <
+                                            550
+                                        ? 16
+                                        : 18,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.charcoal),
                               )),
@@ -370,20 +398,24 @@ class _TourDetailsState extends State<TourDetails> {
                                         Icons.check,
                                         color: AppTheme.pink,
                                         size: MediaQuery.of(context)
-                                            .size
-                                            .shortestSide <
-                                            550?18:20,
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 18
+                                            : 20,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             left: 10.0, right: 10.0),
                                         child: Text(
                                           i.toString(),
-                                          style:  TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide <
-                                                550?15:18,
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 15
+                                                  : 18,
                                               color: Colors.grey),
                                         ),
                                       )
@@ -400,10 +432,11 @@ class _TourDetailsState extends State<TourDetails> {
                     margin: const EdgeInsets.only(
                         left: 20.0, right: 20.0, top: 8.0),
                     child: Container(
-                      constraints: BoxConstraints(minHeight: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?50:55),
+                      constraints: BoxConstraints(
+                          minHeight:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 50
+                                  : 55),
                       child: Row(
                         children: [
                           Container(
@@ -413,9 +446,11 @@ class _TourDetailsState extends State<TourDetails> {
                                 "Not Included",
                                 style: TextStyle(
                                     fontSize: MediaQuery.of(context)
-                                        .size
-                                        .shortestSide <
-                                        550?16:18,
+                                                .size
+                                                .shortestSide <
+                                            550
+                                        ? 16
+                                        : 18,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.charcoal),
                               )),
@@ -434,9 +469,11 @@ class _TourDetailsState extends State<TourDetails> {
                                         Icons.clear,
                                         color: AppTheme.charcoal,
                                         size: MediaQuery.of(context)
-                                            .size
-                                            .shortestSide <
-                                            550?18:20,
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 18
+                                            : 20,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -444,10 +481,12 @@ class _TourDetailsState extends State<TourDetails> {
                                         child: Text(
                                           i.toString(),
                                           style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                .size
-                                                .shortestSide <
-                                                550?15:18,
+                                              fontSize: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 15
+                                                  : 18,
                                               color: Colors.grey),
                                         ),
                                       )

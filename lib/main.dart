@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lonelydubai/Screens/LoginScreen.dart';
 import 'package:lonelydubai/Screens/MainTabScreen.dart';
 import 'package:lonelydubai/Themes/AppTheme.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.getLightTheme(context),
       darkTheme: AppTheme.getDarkTheme(context),
       debugShowCheckedModeBanner: false,
-      home: const MainTabScreen(),
+      home: const LoginScreen(),
     );
   }
 }

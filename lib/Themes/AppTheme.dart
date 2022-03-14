@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static ThemeData getLightTheme(BuildContext context) => ThemeData(
         primarySwatch: pinkMain,
-        textTheme: GoogleFonts.latoTextTheme(
+        textTheme: GoogleFonts.poppinsTextTheme(
           Theme.of(context)
               .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
         ),

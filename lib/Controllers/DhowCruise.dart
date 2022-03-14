@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:lonelydubai/HttpClient/HttpClient.dart';
 import 'package:lonelydubai/Model/AllTours.dart';
 import 'package:http/http.dart' as http;
 

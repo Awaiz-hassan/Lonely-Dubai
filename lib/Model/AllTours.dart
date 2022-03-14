@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-List<AllTours> allToursFromJson(String str) => List<AllTours>.from(json.decode(str).map((x) => AllTours.fromJson(x)));
+List<AllTours> allToursFromJson(String str) =>
+    List<AllTours>.from(json.decode(str).map((x) => AllTours.fromJson(x)));
 
-String allToursToJson(List<AllTours> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String allToursToJson(List<AllTours> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AllTours {
   AllTours({
@@ -54,48 +56,61 @@ class AllTours {
   List<List<String>> tourNotIncluded;
 
   factory AllTours.fromJson(Map<String, dynamic> json) => AllTours(
-    id: json["ID"],
-    postDate: DateTime.parse(json["post_date"]),
-    postContent: json["post_content"],
-    postTitle: json["post_title"],
-    postExcerpt: json["post_excerpt"],
-    postName: json["post_name"],
-    guid: json["guid"],
-    tourImage: json["tour_image"],
-    tourDepartureTime: List<String>.from(json["tour_departure_time"].map((x) => x)),
-    tourDeparture: List<String>.from(json["tour_departure"].map((x) => x)),
-    tourAvailability: List<String>.from(json["tour_availability"].map((x) => x)),
-    tourPrice: List<String>.from(json["tour_price"].map((x) => x)),
-    tourVideoPreview: List<String>.from(json["tour_video_preview"].map((x) => x)),
-    tourMapAddress: List<String>.from(json["tour_map_address"].map((x) => x)),
-    tourReturnTime: List<String>.from(json["tour_return_time"].map((x) => x)),
-    tourDays: List<String>.from(json["tour_days"].map((x) => x)),
-    tourMonths: List<List<String>>.from(json["tour_months"].map((x) => List<String>.from(x.map((x) => x)))),
-    tourMinAge: List<String>.from(json["tour_min_age"].map((x) => x)),
-    tourInclude: List<List<String>>.from(json["tour_include"].map((x) => List<String>.from(x.map((x) => x)))),
-    tourNotIncluded: List<List<String>>.from(json["tour_not_included"].map((x) => List<String>.from(x.map((x) => x)))),
-  );
+        id: json["ID"],
+        postDate: DateTime.parse(json["post_date"]),
+        postContent: json["post_content"],
+        postTitle: json["post_title"],
+        postExcerpt: json["post_excerpt"],
+        postName: json["post_name"],
+        guid: json["guid"],
+        tourImage: json["tour_image"],
+        tourDepartureTime:
+            List<String>.from(json["tour_departure_time"].map((x) => x)),
+        tourDeparture: List<String>.from(json["tour_departure"].map((x) => x)),
+        tourAvailability:
+            List<String>.from(json["tour_availability"].map((x) => x)),
+        tourPrice: List<String>.from(json["tour_price"].map((x) => x)),
+        tourVideoPreview:
+            List<String>.from(json["tour_video_preview"].map((x) => x)),
+        tourMapAddress:
+            List<String>.from(json["tour_map_address"].map((x) => x)),
+        tourReturnTime:
+            List<String>.from(json["tour_return_time"].map((x) => x)),
+        tourDays: List<String>.from(json["tour_days"].map((x) => x)),
+        tourMonths: List<List<String>>.from(
+            json["tour_months"].map((x) => List<String>.from(x.map((x) => x)))),
+        tourMinAge: List<String>.from(json["tour_min_age"].map((x) => x)),
+        tourInclude: List<List<String>>.from(json["tour_include"]
+            .map((x) => List<String>.from(x.map((x) => x)))),
+        tourNotIncluded: List<List<String>>.from(json["tour_not_included"]
+            .map((x) => List<String>.from(x.map((x) => x)))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "ID": id,
-    "post_date": postDate.toIso8601String(),
-    "post_content": postContent,
-    "post_title": postTitle,
-    "post_excerpt": postExcerpt,
-    "post_name": postName,
-    "guid": guid,
-    "tour_image": tourImage,
-    "tour_departure_time": List<dynamic>.from(tourDepartureTime.map((x) => x)),
-    "tour_departure": List<dynamic>.from(tourDeparture.map((x) => x)),
-    "tour_availability": List<dynamic>.from(tourAvailability.map((x) => x)),
-    "tour_price": List<dynamic>.from(tourPrice.map((x) => x)),
-    "tour_video_preview": List<dynamic>.from(tourVideoPreview.map((x) => x)),
-    "tour_map_address": List<dynamic>.from(tourMapAddress.map((x) => x)),
-    "tour_return_time": List<dynamic>.from(tourReturnTime.map((x) => x)),
-    "tour_days": List<dynamic>.from(tourDays.map((x) => x)),
-    "tour_months": List<dynamic>.from(tourMonths.map((x) => List<dynamic>.from(x.map((x) => x)))),
-    "tour_min_age": List<dynamic>.from(tourMinAge.map((x) => x)),
-    "tour_include": List<dynamic>.from(tourInclude.map((x) => List<dynamic>.from(x.map((x) => x)))),
-    "tour_not_included": List<dynamic>.from(tourNotIncluded.map((x) => List<dynamic>.from(x.map((x) => x)))),
-  };
+        "ID": id,
+        "post_date": postDate.toIso8601String(),
+        "post_content": postContent,
+        "post_title": postTitle,
+        "post_excerpt": postExcerpt,
+        "post_name": postName,
+        "guid": guid,
+        "tour_image": tourImage,
+        "tour_departure_time":
+            List<dynamic>.from(tourDepartureTime.map((x) => x)),
+        "tour_departure": List<dynamic>.from(tourDeparture.map((x) => x)),
+        "tour_availability": List<dynamic>.from(tourAvailability.map((x) => x)),
+        "tour_price": List<dynamic>.from(tourPrice.map((x) => x)),
+        "tour_video_preview":
+            List<dynamic>.from(tourVideoPreview.map((x) => x)),
+        "tour_map_address": List<dynamic>.from(tourMapAddress.map((x) => x)),
+        "tour_return_time": List<dynamic>.from(tourReturnTime.map((x) => x)),
+        "tour_days": List<dynamic>.from(tourDays.map((x) => x)),
+        "tour_months": List<dynamic>.from(
+            tourMonths.map((x) => List<dynamic>.from(x.map((x) => x)))),
+        "tour_min_age": List<dynamic>.from(tourMinAge.map((x) => x)),
+        "tour_include": List<dynamic>.from(
+            tourInclude.map((x) => List<dynamic>.from(x.map((x) => x)))),
+        "tour_not_included": List<dynamic>.from(
+            tourNotIncluded.map((x) => List<dynamic>.from(x.map((x) => x)))),
+      };
 }

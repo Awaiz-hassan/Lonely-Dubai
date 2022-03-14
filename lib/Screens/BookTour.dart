@@ -14,8 +14,6 @@ class BookTour extends StatefulWidget {
 }
 
 class _BookTourState extends State<BookTour> {
-
-
   final _fullNameController = TextEditingController();
   final _emailAddressController = TextEditingController();
   final _phoneNumberController = TextEditingController();
@@ -37,17 +35,16 @@ class _BookTourState extends State<BookTour> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              colorScheme:  ColorScheme.light(
-                primary: AppTheme.pink, // header background color
-                onPrimary: Colors.white, // header text color
-                onSurface: AppTheme.charcoal, // body text color
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: AppTheme.pink, // button text color
+                colorScheme: ColorScheme.light(
+                  primary: AppTheme.pink, // header background color
+                  onPrimary: Colors.white, // header text color
+                  onSurface: AppTheme.charcoal, // body text color
                 ),
-              )
-            ),
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    primary: AppTheme.pink, // button text color
+                  ),
+                )),
             child: child!,
           );
         },
@@ -89,10 +86,11 @@ class _BookTourState extends State<BookTour> {
                 Flexible(
                     child: Text(
                   widget.bookTour.postTitle,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context)
-                      .size
-                      .shortestSide <
-                      550?16:20),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.shortestSide < 550
+                          ? 16
+                          : 20),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
@@ -111,33 +109,34 @@ class _BookTourState extends State<BookTour> {
                   Image.asset(
                     "assets/images/form_image.png",
                     width: double.infinity,
-                    height: MediaQuery.of(context)
-                        .size
-                        .shortestSide <
-                        550?260.0:300.0,
+                    height: MediaQuery.of(context).size.shortestSide < 550
+                        ? 260.0
+                        : 300.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
                       "Book your tour now",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?16:18),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 16
+                                  : 18),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
                     ),
                   ),
-                   Padding(
-                    padding:const EdgeInsets.only(left: 20.0, top: 10.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
                       "Full Name",
-                      style: TextStyle(fontSize: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?15:17),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 15
+                                  : 17),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
@@ -149,20 +148,20 @@ class _BookTourState extends State<BookTour> {
                     color: Colors.white,
                     elevation: 2.0,
                     child: Container(
-                      margin: EdgeInsets.only(top: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?0:3),
-                      height: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?45:50,
+                      margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.shortestSide < 550
+                              ? 0
+                              : 3),
+                      height: MediaQuery.of(context).size.shortestSide < 550
+                          ? 45
+                          : 50,
                       child: TextField(
                         controller: _fullNameController,
-                        style: TextStyle(fontSize: MediaQuery.of(context)
-                            .size
-                            .shortestSide <
-                            550?15.0:17.0),
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 15.0
+                                    : 17.0),
                         cursorColor: AppTheme.black,
                         decoration: const InputDecoration(
                             contentPadding: EdgeInsets.only(
@@ -173,14 +172,15 @@ class _BookTourState extends State<BookTour> {
                       ),
                     ),
                   ),
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
                       "Email Address",
-                      style: TextStyle(fontSize: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?15.0:17.0),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 15.0
+                                  : 17.0),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
@@ -192,20 +192,20 @@ class _BookTourState extends State<BookTour> {
                     color: Colors.white,
                     elevation: 2.0,
                     child: Container(
-                      margin: EdgeInsets.only(top: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?0.0:3.0),
-                      height: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?45.0:50.0,
+                      margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.shortestSide < 550
+                              ? 0.0
+                              : 3.0),
+                      height: MediaQuery.of(context).size.shortestSide < 550
+                          ? 45.0
+                          : 50.0,
                       child: TextField(
                         controller: _emailAddressController,
-                        style:  TextStyle(fontSize: MediaQuery.of(context)
-                            .size
-                            .shortestSide <
-                            550?15.0:17.0),
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 15.0
+                                    : 17.0),
                         cursorColor: AppTheme.black,
                         decoration: const InputDecoration(
                             contentPadding: EdgeInsets.only(
@@ -216,14 +216,15 @@ class _BookTourState extends State<BookTour> {
                       ),
                     ),
                   ),
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
                       "Phone Number",
-                      style: TextStyle(fontSize: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?15.0:17.0),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 15.0
+                                  : 17.0),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
@@ -235,16 +236,16 @@ class _BookTourState extends State<BookTour> {
                     color: Colors.white,
                     elevation: 2.0,
                     child: SizedBox(
-                      height: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?45.0:50.0,
+                      height: MediaQuery.of(context).size.shortestSide < 550
+                          ? 45.0
+                          : 50.0,
                       child: TextField(
                         controller: _phoneNumberController,
-                        style:  TextStyle(fontSize: MediaQuery.of(context)
-                            .size
-                            .shortestSide <
-                            550?15.0:17.0),
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 15.0
+                                    : 17.0),
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(13),
@@ -262,13 +263,14 @@ class _BookTourState extends State<BookTour> {
                     ),
                   ),
                   Padding(
-                    padding:const EdgeInsets.only(left: 20.0, top: 10.0),
+                    padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
                       "Tour Date",
-                      style: TextStyle(fontSize: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?15.0:17.0),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 15.0
+                                  : 17.0),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
@@ -277,8 +279,8 @@ class _BookTourState extends State<BookTour> {
                   Card(
                       color: Colors.white,
                       elevation: 2.0,
-                      margin:
-                          const EdgeInsets.only(left: 20.0, right: 20.0, top: 5.0),
+                      margin: const EdgeInsets.only(
+                          left: 20.0, right: 20.0, top: 5.0),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           side: const BorderSide(
@@ -288,14 +290,14 @@ class _BookTourState extends State<BookTour> {
                           _selectDate(context);
                         },
                         child: Container(
-                          height: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?45.0:50.0,
-                          margin: EdgeInsets.only(top: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?0.0:5.0),
+                          height: MediaQuery.of(context).size.shortestSide < 550
+                              ? 45.0
+                              : 50.0,
+                          margin: EdgeInsets.only(
+                              top:
+                                  MediaQuery.of(context).size.shortestSide < 550
+                                      ? 0.0
+                                      : 5.0),
                           child: SizedBox.expand(
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -304,22 +306,26 @@ class _BookTourState extends State<BookTour> {
                                 date.toString(),
                                 style: TextStyle(
                                     fontSize: MediaQuery.of(context)
-                                        .size
-                                        .shortestSide <
-                                        550?15.0:17.0, color: Colors.grey),
+                                                .size
+                                                .shortestSide <
+                                            550
+                                        ? 15.0
+                                        : 17.0,
+                                    color: Colors.grey),
                               ),
                             ),
                           ),
                         ),
                       )),
-                   Padding(
-                    padding:const EdgeInsets.only(left: 20.0, top: 10.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
                       "Number of persons",
-                      style: TextStyle(fontSize: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?15.0:17.0),
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.shortestSide < 550
+                                  ? 15.0
+                                  : 17.0),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
@@ -331,14 +337,13 @@ class _BookTourState extends State<BookTour> {
                     color: Colors.white,
                     elevation: 2.0,
                     child: Container(
-                      height: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?45.0:50.0,
-                      margin: EdgeInsets.only(top: MediaQuery.of(context)
-                          .size
-                          .shortestSide <
-                          550?0.0:3.0),
+                      height: MediaQuery.of(context).size.shortestSide < 550
+                          ? 45.0
+                          : 50.0,
+                      margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.shortestSide < 550
+                              ? 0.0
+                              : 3.0),
                       child: TextField(
                         controller: _nOPController,
                         style: const TextStyle(fontSize: 15.0),
@@ -364,14 +369,12 @@ class _BookTourState extends State<BookTour> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: MediaQuery.of(context)
-                            .size
-                            .shortestSide <
-                            550?35.0:40.0,
-                        width:MediaQuery.of(context)
-                            .size
-                            .shortestSide <
-                            550?120.0:180.0 ,
+                        height: MediaQuery.of(context).size.shortestSide < 550
+                            ? 35.0
+                            : 40.0,
+                        width: MediaQuery.of(context).size.shortestSide < 550
+                            ? 120.0
+                            : 180.0,
                         margin: const EdgeInsets.only(top: 10, bottom: 30.0),
                         child: TextButton(
                           onPressed: () {
@@ -431,27 +434,31 @@ class _BookTourState extends State<BookTour> {
                               behavior: SnackBarBehavior.floating,
                               margin: EdgeInsets.all(10.0),
                               content: Text(
-                                  "Tour Booked. Our team will soon get in touch with you.",textAlign: TextAlign.center,),
+                                "Tour Booked. Our team will soon get in touch with you.",
+                                textAlign: TextAlign.center,
+                              ),
                               backgroundColor: Colors.green,
-
                             ));
                           },
-                          child:  Text("Book Tour",style: TextStyle(fontSize: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?15.0:17.0,
-                          fontWeight: MediaQuery.of(context)
-                              .size
-                              .shortestSide <
-                              550?FontWeight.normal:FontWeight.bold),),
+                          child: Text(
+                            "Book Tour",
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.shortestSide <
+                                            550
+                                        ? 15.0
+                                        : 17.0,
+                                fontWeight:
+                                    MediaQuery.of(context).size.shortestSide <
+                                            550
+                                        ? FontWeight.normal
+                                        : FontWeight.bold),
+                          ),
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.only(
                                   left: 15.0, right: 15.0),
                               primary: Colors.white,
-
                               backgroundColor: AppTheme.pink),
-
-
                         ),
                       )
                     ],

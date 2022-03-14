@@ -175,8 +175,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                               Flexible(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5.0, top: 5.0,bottom: 5.0),
+                                padding: const EdgeInsets.only(
+                                    left: 5.0, top: 5.0, bottom: 5.0),
                                 child: Text(
                                   _searchRes[index].postTitle,
                                   style: TextStyle(

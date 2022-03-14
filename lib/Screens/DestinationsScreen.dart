@@ -60,7 +60,8 @@ class _DestinationsScreenState extends State<DestinationsScreen>
                         builder: (context) => const SearchScreen()));
               },
               child: Card(
-                  margin: const EdgeInsets.only(left: 20, right: 20.0, bottom: 20.0),
+                  margin: const EdgeInsets.only(
+                      left: 20, right: 20.0, bottom: 20.0),
                   color: Colors.white,
                   elevation: 1.0,
                   shape: RoundedRectangleBorder(
@@ -97,18 +98,21 @@ class _DestinationsScreenState extends State<DestinationsScreen>
                   )
                 : _allDestinationsController.errorOccur.value
                     ? Expanded(
-                      child: Center(
+                        child: Center(
                           child: Container(
-                            height: MediaQuery.of(context).size.shortestSide < 550
-                                ? 25
-                                : 35.0,
-                            width: MediaQuery.of(context).size.shortestSide < 550
-                                ? 80
-                                : 110.0,
-                            margin:const EdgeInsets.only(top: 10),
+                            height:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 25
+                                    : 35.0,
+                            width:
+                                MediaQuery.of(context).size.shortestSide < 550
+                                    ? 80
+                                    : 110.0,
+                            margin: const EdgeInsets.only(top: 10),
                             child: TextButton(
                               onPressed: () {
-                                _allDestinationsController.allDestinations(1, 20);
+                                _allDestinationsController.allDestinations(
+                                    1, 20);
                               },
                               child: const Text(
                                 "Retry",
@@ -123,7 +127,7 @@ class _DestinationsScreenState extends State<DestinationsScreen>
                             ),
                           ),
                         ),
-                    )
+                      )
                     : Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
