@@ -27,15 +27,15 @@ class AppTheme {
       100: Color(0xffff8085),
       200: Color(0xffff8085),
       300: Color(0xFFff4d54),
-      400: Color(0xFFff1a24),
+      400: Color(0xFFff4d54),
       500: Color(_pinkPrimaryValue),
-      600: Color(0xFFe6000a),
-      700: Color(0xFF800006),
-      800: Color(0xFF4d0003),
-      900: Color(0xFF1a0001),
+      600: Color(0xFFff4d54),
+      700: Color(0xFFff4d54),
+      800: Color(0xFFff4d54),
+      900: Color(0xFFff4d54),
     },
   );
-  static const int _pinkPrimaryValue = 0xFF1A0001;
+  static const int _pinkPrimaryValue = 0xFFff4d54;
 
   static Color pink = const Color(0XFFff4d54);
   static Color black = const Color(0XFF191922);

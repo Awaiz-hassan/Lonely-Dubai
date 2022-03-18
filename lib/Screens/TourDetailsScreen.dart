@@ -162,19 +162,63 @@ class _TourDetailsState extends State<TourDetails> {
                                           : 18),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                            child: Text(
-                              "AED " + widget.tourDetails.tourPrice[0],
-                              style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.shortestSide <
-                                              550
-                                          ? 18
-                                          : 22,
-                                  color: AppTheme.pink),
-                            ),
-                          ),
+                          Column(
+                            children: [
+                              widget.tourDetails.tourDiscountPrice.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, top: 12.0),
+                                      child: Text(
+                                        "AED " +
+                                            widget.tourDetails.tourPrice[0],
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .shortestSide <
+                                                    550
+                                                ? 12
+                                                : 15,
+                                            color: AppTheme.charcoal,
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                    )
+                                  : Container(),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: widget.tourDetails.tourDiscountPrice
+                                        .isNotEmpty
+                                    ? Text(
+                                        "AED " +
+                                            widget.tourDetails
+                                                .tourDiscountPrice[0],
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .shortestSide <
+                                                    550
+                                                ? 18
+                                                : 22,
+                                            color: AppTheme.pink),
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(top: 8.0),
+                                        child: Text(
+                                          "AED " +
+                                              widget.tourDetails.tourPrice[0],
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                          .size
+                                                          .shortestSide <
+                                                      550
+                                                  ? 18
+                                                  : 22,
+                                              color: AppTheme.pink),
+                                        ),
+                                      ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                       Container(
@@ -221,8 +265,13 @@ class _TourDetailsState extends State<TourDetails> {
                             "Age " + widget.tourDetails.tourMinAge[0] + "+"),
                         tabItem("assets/icons/person.svg",
                             widget.tourDetails.tourAvailability[0]),
-                        tabItem("assets/icons/money.svg",
-                            "AED " + widget.tourDetails.tourPrice[0])
+                        widget.tourDetails.tourDiscountPrice.isNotEmpty
+                            ? tabItem(
+                                "assets/icons/money.svg",
+                                "AED " +
+                                    widget.tourDetails.tourDiscountPrice[0])
+                            : tabItem("assets/icons/money.svg",
+                                "AED " + widget.tourDetails.tourPrice[0])
                       ],
                     ),
                   ),
@@ -362,6 +411,7 @@ class _TourDetailsState extends State<TourDetails> {
                     margin: const EdgeInsets.only(
                         left: 20.0, right: 20.0, top: 8.0),
                     child: Container(
+                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                       constraints: BoxConstraints(
                           minHeight:
                               MediaQuery.of(context).size.shortestSide < 550
@@ -384,31 +434,43 @@ class _TourDetailsState extends State<TourDetails> {
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.charcoal),
                               )),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                for (var i in widget.tourDetails.tourInclude[0])
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check,
-                                        color: AppTheme.pink,
-                                        size: MediaQuery.of(context)
+                          Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount:
+                                  widget.tourDetails.tourInclude[0].length,
+                              itemBuilder: (context, i) {
+                                return Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide <
                                                 550
-                                            ? 18
-                                            : 20,
+                                            ? const EdgeInsets.only(top: 2.0)
+                                            : const EdgeInsets.only(top: 4.0),
+                                        child: Icon(
+                                          Icons.check,
+                                          color: AppTheme.pink,
+                                          size: MediaQuery.of(context)
+                                                      .size
+                                                      .shortestSide <
+                                                  550
+                                              ? 18
+                                              : 20,
+                                        ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10.0, right: 10.0),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 25, right: 10),
                                         child: Text(
-                                          i.toString(),
+                                          widget.tourDetails.tourInclude[0][i],
                                           style: TextStyle(
                                               fontSize: MediaQuery.of(context)
                                                           .size
@@ -418,10 +480,11 @@ class _TourDetailsState extends State<TourDetails> {
                                                   : 18,
                                               color: Colors.grey),
                                         ),
-                                      )
-                                    ],
-                                  )
-                              ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
                             ),
                           )
                         ],
@@ -430,8 +493,9 @@ class _TourDetailsState extends State<TourDetails> {
                   ),
                   Card(
                     margin: const EdgeInsets.only(
-                        left: 20.0, right: 20.0, top: 8.0),
+                        left: 20.0, right: 20.0, top: 8.0, bottom: 10.0),
                     child: Container(
+                      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                       constraints: BoxConstraints(
                           minHeight:
                               MediaQuery.of(context).size.shortestSide < 550
@@ -454,32 +518,44 @@ class _TourDetailsState extends State<TourDetails> {
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.charcoal),
                               )),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                for (var i
-                                    in widget.tourDetails.tourNotIncluded[0])
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.clear,
-                                        color: AppTheme.charcoal,
-                                        size: MediaQuery.of(context)
+                          Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount:
+                                  widget.tourDetails.tourNotIncluded[0].length,
+                              itemBuilder: (context, i) {
+                                return Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: MediaQuery.of(context)
                                                     .size
                                                     .shortestSide <
                                                 550
-                                            ? 18
-                                            : 20,
+                                            ? const EdgeInsets.only(top: 2.0)
+                                            : const EdgeInsets.only(top: 4.0),
+                                        child: Icon(
+                                          Icons.clear,
+                                          color: AppTheme.charcoal,
+                                          size: MediaQuery.of(context)
+                                                      .size
+                                                      .shortestSide <
+                                                  550
+                                              ? 18
+                                              : 20,
+                                        ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10.0, right: 10.0),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 25, right: 10),
                                         child: Text(
-                                          i.toString(),
+                                          widget.tourDetails.tourNotIncluded[0]
+                                              [i],
                                           style: TextStyle(
                                               fontSize: MediaQuery.of(context)
                                                           .size
@@ -489,10 +565,11 @@ class _TourDetailsState extends State<TourDetails> {
                                                   : 18,
                                               color: Colors.grey),
                                         ),
-                                      )
-                                    ],
-                                  )
-                              ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
                             ),
                           )
                         ],

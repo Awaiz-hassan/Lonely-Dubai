@@ -278,24 +278,52 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                                   child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(4.0),
-                                                child: Text(
-                                                  "AED " +
-                                                      snapshot.data![index]
-                                                          .tourPrice[0],
-                                                  style: TextStyle(
-                                                      color: AppTheme.pink,
-                                                      fontSize: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .shortestSide <
-                                                              550
-                                                          ? 12.0
-                                                          : 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
+                                                child: snapshot
+                                                        .data![index]
+                                                        .tourDiscountPrice
+                                                        .isNotEmpty
+                                                    ? Text(
+                                                        "AED " +
+                                                            snapshot
+                                                                .data![index]
+                                                                .tourDiscountPrice[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppTheme.pink,
+                                                            fontSize: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .shortestSide <
+                                                                    550
+                                                                ? 12.0
+                                                                : 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    : Text(
+                                                        "AED " +
+                                                            snapshot
+                                                                .data![index]
+                                                                .tourPrice[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                AppTheme.pink,
+                                                            fontSize: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .shortestSide <
+                                                                    550
+                                                                ? 12.0
+                                                                : 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
                                               )),
                                               Container(
                                                 height: MediaQuery.of(context)
@@ -344,11 +372,9 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                       ));
                                 })
                             : Center(
-                                child: Center(
-                                    child: Lottie.asset(
-                                        'assets/animations/loading.json',
-                                        height: 100.0)),
-                              )),
+                                child: Lottie.asset(
+                                    'assets/animations/loading.json',
+                                    height: 100.0))),
               ),
             ),
           ],

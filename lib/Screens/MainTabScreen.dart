@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lonelydubai/Screens/DestinationsScreen.dart';
 import 'package:lonelydubai/Screens/HomeScreen.dart';
+import 'package:lonelydubai/Screens/ProfileScreen.dart';
 import 'package:lonelydubai/Screens/ToursScreen.dart';
 import 'package:lonelydubai/Themes/AppTheme.dart';
 import 'package:lonelydubai/Widgets/DotIndicator.dart';
@@ -20,7 +21,7 @@ class _MainTabScreenState extends State<MainTabScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -30,7 +31,12 @@ class _MainTabScreenState extends State<MainTabScreen>
       body: TabBarView(
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
-        children: const [HomeScreen(), DestinationsScreen(), ToursScreen()],
+        children: const [
+          HomeScreen(),
+          DestinationsScreen(),
+          ToursScreen(),
+          ProfileScreen()
+        ],
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(5.0),
@@ -67,6 +73,14 @@ class _MainTabScreenState extends State<MainTabScreen>
                 ),
                 "Tours",
                 2),
+            tabItem(
+                SvgPicture.asset(
+                  "assets/icons/user.svg",
+                  height: 20,
+                  color: Colors.grey,
+                ),
+                "Profile",
+                3),
           ],
           labelColor: AppTheme.pink,
           unselectedLabelColor: Colors.grey,

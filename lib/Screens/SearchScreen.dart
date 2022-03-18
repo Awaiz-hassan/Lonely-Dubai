@@ -215,19 +215,36 @@ class _SearchScreenState extends State<SearchScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5.0),
-                                    child: Text(
-                                      "AED    " +
-                                          _searchRes[index].tourPrice[0],
-                                      style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                      .size
-                                                      .shortestSide <
-                                                  550
-                                              ? 14
-                                              : 17,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppTheme.pink),
-                                    ),
+                                    child: _searchRes[index]
+                                            .tourDiscountPrice
+                                            .isNotEmpty
+                                        ? Text(
+                                            "AED " +
+                                                _searchRes[index]
+                                                    .tourDiscountPrice[0],
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                            .size
+                                                            .shortestSide <
+                                                        550
+                                                    ? 14
+                                                    : 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppTheme.pink),
+                                          )
+                                        : Text(
+                                            "AED " +
+                                                _searchRes[index].tourPrice[0],
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                            .size
+                                                            .shortestSide <
+                                                        550
+                                                    ? 14
+                                                    : 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppTheme.pink),
+                                          ),
                                   ),
                                   Container(
                                     height: MediaQuery.of(context)

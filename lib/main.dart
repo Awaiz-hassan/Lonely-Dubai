@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lonelydubai/Screens/LoginScreen.dart';
 import 'package:lonelydubai/Screens/MainTabScreen.dart';
+import 'package:lonelydubai/Screens/SplashScreen.dart';
 import 'package:lonelydubai/Themes/AppTheme.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.getLightTheme(context),
       darkTheme: AppTheme.getDarkTheme(context),
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }

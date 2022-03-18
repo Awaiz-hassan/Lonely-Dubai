@@ -209,7 +209,7 @@ class _TopDestinationsState extends State<TopDestinations> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: MediaQuery.of(context).size.shortestSide < 550 ? 300 : 315,
       margin: EdgeInsets.only(
           left: MediaQuery.of(context).size.shortestSide < 550 ? 0.0 : 5.0,
           right: MediaQuery.of(context).size.shortestSide < 550 ? 0.0 : 5.0,
@@ -482,7 +482,7 @@ class _BestDhoCruiseState extends State<BestDhoCruiseTour> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.shortestSide < 550 ? 360 : 500,
+      height: MediaQuery.of(context).size.shortestSide < 550 ? 380 : 520,
       margin: const EdgeInsets.only(left: 10.0, right: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -548,8 +548,8 @@ class _BestDhoCruiseState extends State<BestDhoCruiseTour> {
                                                   .size
                                                   .shortestSide <
                                               550
-                                          ? 160
-                                          : 220,
+                                          ? 165
+                                          : 230,
                                       crossAxisCount: 3),
                               itemCount:
                                   _dhowCruiseController.dhowCruiseList.length,
@@ -593,7 +593,6 @@ class _BestDhoCruiseState extends State<BestDhoCruiseTour> {
                                             ),
                                           ),
                                           SizedBox(
-                                              height: 40,
                                               child: Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -632,22 +631,46 @@ class _BestDhoCruiseState extends State<BestDhoCruiseTour> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                "AED " +
-                                                    _dhowCruiseController
-                                                        .dhowCruiseList[index]
-                                                        .tourPrice[0],
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .shortestSide <
-                                                            550
-                                                        ? 12.0
-                                                        : 16),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
+                                              child: _dhowCruiseController
+                                                      .dhowCruiseList[index]
+                                                      .tourDiscountPrice
+                                                      .isNotEmpty
+                                                  ? Text(
+                                                      "AED " +
+                                                          _dhowCruiseController
+                                                              .dhowCruiseList[
+                                                                  index]
+                                                              .tourDiscountPrice[0],
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .shortestSide <
+                                                                  550
+                                                              ? 12.0
+                                                              : 16),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    )
+                                                  : Text(
+                                                      "AED " +
+                                                          _dhowCruiseController
+                                                              .dhowCruiseList[
+                                                                  index]
+                                                              .tourPrice[0],
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .shortestSide <
+                                                                  550
+                                                              ? 12.0
+                                                              : 16),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                             ),
                                           ))
                                         ],
@@ -805,21 +828,44 @@ class _DesertSafariState extends State<DesertSafariTour> {
                                                   Radius.circular(3.0))),
                                       child: Padding(
                                         padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "AED " +
-                                              _dubaiSafariController
-                                                  .dubaiSafariToursList[index]
-                                                  .tourPrice[0],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: MediaQuery.of(context)
-                                                          .size
-                                                          .shortestSide <
-                                                      550
-                                                  ? 12
-                                                  : 16),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                        child: _dubaiSafariController
+                                                .dubaiSafariToursList[index]
+                                                .tourDiscountPrice
+                                                .isNotEmpty
+                                            ? Text(
+                                                "AED " +
+                                                    _dubaiSafariController
+                                                        .dubaiSafariToursList[
+                                                            index]
+                                                        .tourDiscountPrice[0],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .shortestSide <
+                                                            550
+                                                        ? 12
+                                                        : 16),
+                                                overflow: TextOverflow.ellipsis,
+                                              )
+                                            : Text(
+                                                "AED " +
+                                                    _dubaiSafariController
+                                                        .dubaiSafariToursList[
+                                                            index]
+                                                        .tourPrice[0],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .shortestSide <
+                                                            550
+                                                        ? 12
+                                                        : 16),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                       ),
                                     ),
                                   ),

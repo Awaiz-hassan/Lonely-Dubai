@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lonelydubai/Model/AllTours.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Themes/AppTheme.dart';
 
 class BookTour extends StatefulWidget {
@@ -15,12 +20,100 @@ class BookTour extends StatefulWidget {
 
 class _BookTourState extends State<BookTour> {
   final _fullNameController = TextEditingController();
-  final _emailAddressController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _nOPController = TextEditingController();
 
   late String date;
   late DateTime selectedDate;
+  bool isLoading = false;
+
+  bookTour(String name, String phoneNumber, String tourName, String date,
+      String numOfPersons, String booking_price) async {
+    var totalPrice = int.parse(numOfPersons) * int.parse(booking_price);
+    showLoadingDialog();
+    var client = http.Client();
+    final prefs = await SharedPreferences.getInstance();
+
+    var token = prefs.getString('key');
+    client
+        .post(
+      Uri.parse(
+          "https://lonelydubai.com/booking/public/api/createCustomer?customer_name=$name&mobile_no=$phoneNumber&tours=$tourName&number_of_person=$numOfPersons&date=$date&status=in-processing&booking_price=$totalPrice"),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      encoding: Encoding.getByName("utf-8"),
+    )
+        .then((response) {
+      if (response.statusCode == 200) {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        showMessageDialog("assets/icons/success.svg",
+            "Tour Booked!\n Our team will update you soon.", Colors.green);
+      }
+    });
+  }
+
+  showLoadingDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          isLoading = true;
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: Container(
+                height: 200,
+                child: Center(
+                    child: Lottie.asset('assets/animations/loading.json',
+                        height: 60.0))),
+          );
+        }).then((_) => isLoading = false);
+  }
+
+  showMessageDialog(String imagePath, String message, Color color) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: SizedBox(
+                height: 200,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: SvgPicture.asset(
+                          imagePath,
+                          height: 45,
+                          color: color,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          margin: const EdgeInsets.only(
+                              top: 40, left: 20, right: 20),
+                          child: Text(
+                            message,
+                            style:
+                                TextStyle(fontSize: 16, color: AppTheme.black),
+                            textAlign: TextAlign.center,
+                          )),
+                    )
+                  ],
+                )),
+          );
+        });
+  }
 
   @override
   void initState() {
@@ -175,50 +268,6 @@ class _BookTourState extends State<BookTour> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, top: 10.0),
                     child: Text(
-                      "Email Address",
-                      style: TextStyle(
-                          fontSize:
-                              MediaQuery.of(context).size.shortestSide < 550
-                                  ? 15.0
-                                  : 17.0),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  Card(
-                    margin: const EdgeInsets.only(
-                        top: 5.0, left: 20.0, right: 20.0, bottom: 10.0),
-                    color: Colors.white,
-                    elevation: 2.0,
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.shortestSide < 550
-                              ? 0.0
-                              : 3.0),
-                      height: MediaQuery.of(context).size.shortestSide < 550
-                          ? 45.0
-                          : 50.0,
-                      child: TextField(
-                        controller: _emailAddressController,
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.shortestSide < 550
-                                    ? 15.0
-                                    : 17.0),
-                        cursorColor: AppTheme.black,
-                        decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                                left: 10.0, right: 10.0, top: 0.0, bottom: 0.0),
-                            border: InputBorder.none,
-                            hintText: 'abc@mail.com',
-                            hintStyle: TextStyle(color: Colors.grey)),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, top: 10.0),
-                    child: Text(
                       "Phone Number",
                       style: TextStyle(
                           fontSize:
@@ -286,9 +335,7 @@ class _BookTourState extends State<BookTour> {
                           side: const BorderSide(
                               color: Colors.white, width: 1.5)),
                       child: GestureDetector(
-                        onTap: () {
-                          _selectDate(context);
-                        },
+                        onTap: () {},
                         child: Container(
                           height: MediaQuery.of(context).size.shortestSide < 550
                               ? 45.0
@@ -389,20 +436,7 @@ class _BookTourState extends State<BookTour> {
                               ));
                               return;
                             }
-                            if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(
-                                        _emailAddressController.text.trim()) ||
-                                _emailAddressController.text.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                elevation: 8.0,
-                                behavior: SnackBarBehavior.floating,
-                                margin: EdgeInsets.all(10.0),
-                                content: Text("Enter valid email."),
-                                backgroundColor: Colors.red,
-                              ));
-                              return;
-                            }
+
                             if (_phoneNumberController.text.isEmpty ||
                                 _phoneNumberController.text.length < 13) {
                               ScaffoldMessenger.of(context)
@@ -428,17 +462,15 @@ class _BookTourState extends State<BookTour> {
                               return;
                             }
 
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              elevation: 8.0,
-                              behavior: SnackBarBehavior.floating,
-                              margin: EdgeInsets.all(10.0),
-                              content: Text(
-                                "Tour Booked. Our team will soon get in touch with you.",
-                                textAlign: TextAlign.center,
-                              ),
-                              backgroundColor: Colors.green,
-                            ));
+                            bookTour(
+                                _fullNameController.text.toString(),
+                                _phoneNumberController.text.toString(),
+                                widget.bookTour.postTitle,
+                                date,
+                                _nOPController.text.toString(),
+                                widget.bookTour.tourNotIncluded.isNotEmpty
+                                    ? widget.bookTour.tourDiscountPrice[0]
+                                    : widget.bookTour.tourPrice[0]);
                           },
                           child: Text(
                             "Book Tour",

@@ -208,21 +208,48 @@ class _ToursScreenState extends State<ToursScreen>
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 5.0),
-                                        child: Text(
-                                          "AED    " +
-                                              _allToursController
-                                                  .allToursList[index]
-                                                  .tourPrice[0],
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                          .size
-                                                          .shortestSide <
-                                                      550
-                                                  ? 14
-                                                  : 17,
-                                              fontWeight: FontWeight.bold,
-                                              color: AppTheme.pink),
-                                        ),
+                                        child: _allToursController
+                                                .allToursList[index]
+                                                .tourDiscountPrice
+                                                .isNotEmpty
+                                            ? Text(
+                                                "AED    " +
+                                                    _allToursController
+                                                        .allToursList[index]
+                                                        .tourDiscountPrice[0],
+                                                style: TextStyle(
+                                                    fontSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .shortestSide <
+                                                            550
+                                                        ? 14
+                                                        : 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppTheme.pink),
+                                              )
+                                            : _allToursController
+                                                    .allToursList[index]
+                                                    .tourPrice
+                                                    .isNotEmpty
+                                                ? Text(
+                                                    "AED    " +
+                                                        _allToursController
+                                                            .allToursList[index]
+                                                            .tourPrice[0],
+                                                    style: TextStyle(
+                                                        fontSize: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .shortestSide <
+                                                                550
+                                                            ? 14
+                                                            : 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppTheme.pink),
+                                                  )
+                                                : const SizedBox(),
                                       ),
                                       Container(
                                         height: MediaQuery.of(context)
