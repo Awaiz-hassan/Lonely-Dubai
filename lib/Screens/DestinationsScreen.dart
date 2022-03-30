@@ -213,7 +213,7 @@ class _DestinationsScreenState extends State<DestinationsScreen>
                                             .allDestinationsList[index]
                                             .postExcerpt,
                                         overflow: TextOverflow.ellipsis,
-                                        maxLines: 3,
+                                        maxLines: 2,
                                         style: TextStyle(
                                             fontSize: MediaQuery.of(context)
                                                         .size

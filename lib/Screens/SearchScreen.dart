@@ -108,39 +108,53 @@ class _SearchScreenState extends State<SearchScreen> {
                   borderRadius: BorderRadius.circular(5.0),
                   side: const BorderSide(color: Colors.white, width: 1.5)),
               child: SizedBox(
-                height: 50.0,
-                child: SizedBox.expand(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 0.0, left: 10.0, right: 10.0),
-                    child: TextField(
-                      controller: _textEditingController,
-                      textInputAction: TextInputAction.search,
-                      onSubmitted: (value) {
-                        setState(() {
-                          if (_textEditingController.text.isEmpty) {
-                            _validate = false;
-                          } else {
-                            _validate = true;
-                          }
-                        });
+                  height: 50.0,
+                  child: Stack(
+                    children: [
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                              margin: const EdgeInsets.only(left: 10.0),
+                              child: const Icon(Icons.search_rounded,color: Colors.grey,size: 20,))),
+                      Align(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 27.0),
+                          child: SizedBox.expand(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0.0, left: 10.0, right: 10.0),
+                              child: TextField(
+                                controller: _textEditingController,
+                                textInputAction: TextInputAction.search,
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    if (_textEditingController.text.isEmpty) {
+                                      _validate = false;
+                                    } else {
+                                      _validate = true;
+                                    }
+                                  });
 
-                        if (_validate) {
-                          searchTours(
-                              _textEditingController.text.toString().trim());
-                        }
-                      },
-                      cursorColor: AppTheme.black,
-                      decoration: const InputDecoration(
-                          contentPadding:
-                              EdgeInsets.only(left: 3.0, right: 3.0),
-                          border: InputBorder.none,
-                          hintText: 'Where you want to go?',
-                          hintStyle: TextStyle(color: Colors.grey)),
-                    ),
-                  ),
-                ),
-              )),
+                                  if (_validate) {
+                                    searchTours(_textEditingController.text
+                                        .toString()
+                                        .trim());
+                                  }
+                                },
+                                cursorColor: AppTheme.black,
+                                decoration: const InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.only(left: 3.0, right: 3.0),
+                                    border: InputBorder.none,
+                                    hintText: 'Where you want to go?',
+                                    hintStyle: TextStyle(color: Colors.grey)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ))),
           Expanded(
               child: loading
                   ? Center(
@@ -155,7 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           margin: const EdgeInsets.only(
                               top: 5.0, bottom: 5.0, right: 20.0, left: 20.0),
                           height: MediaQuery.of(context).size.shortestSide < 550
-                              ? 350
+                              ? 280
                               : 450,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,48 +205,32 @@ class _SearchScreenState extends State<SearchScreen> {
                                   maxLines:
                                       MediaQuery.of(context).size.shortestSide <
                                               550
-                                          ? 2
+                                          ? 1
                                           : 1,
                                 ),
                               )),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 5.0, right: 5.0, top: 3.0),
-                                child: Text(_searchRes[index].postExcerpt,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
-                                    style: TextStyle(
-                                        fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .shortestSide <
-                                                550
-                                            ? 14
-                                            : 17)),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(
+                              //       left: 5.0, right: 5.0, top: 3.0),
+                              //   child: Text(_searchRes[index].postExcerpt,
+                              //       overflow: TextOverflow.ellipsis,
+                              //       maxLines: 3,
+                              //       style: TextStyle(
+                              //           fontSize: MediaQuery.of(context)
+                              //                       .size
+                              //                       .shortestSide <
+                              //                   550
+                              //               ? 14
+                              //               : 17)),
+                              // ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 5.0),
-                                    child: _searchRes[index]
-                                            .tourDiscountPrice
-                                            .isNotEmpty
-                                        ? Text(
-                                            "AED " +
-                                                _searchRes[index]
-                                                    .tourDiscountPrice[0],
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                            .size
-                                                            .shortestSide <
-                                                        550
-                                                    ? 14
-                                                    : 17,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppTheme.pink),
-                                          )
-                                        : Text(
+                                    padding: const EdgeInsets.only(
+                                        left: 5.0, top: 10.0),
+                                    child: Text(
                                             "AED " +
                                                 _searchRes[index].tourPrice[0],
                                             style: TextStyle(
@@ -263,7 +261,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                     TourDetails(
                                                         _searchRes[index])));
                                       },
-                                      child: Text("Book Now",
+                                      child: Text("View Tour",
                                           style: TextStyle(
                                               fontSize: MediaQuery.of(context)
                                                           .size

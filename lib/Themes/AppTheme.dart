@@ -23,6 +23,7 @@ class AppTheme {
   static const MaterialColor pinkMain = MaterialColor(
     _pinkPrimaryValue,
     <int, Color>{
+
       50: Color(0xffffe5e7),
       100: Color(0xffff8085),
       200: Color(0xffff8085),
@@ -42,4 +43,6 @@ class AppTheme {
   static Color charcoal = const Color(0XFF36454F);
   static Color darkBlue = const Color(0XFF001b3a);
   static Color darkBackground = const Color(0XFF001b3a);
+  static Color lightPink = const Color(0XFFFFF6F6);
+  static Color lightGrey = const Color(0XFFE8E8E8);
 }

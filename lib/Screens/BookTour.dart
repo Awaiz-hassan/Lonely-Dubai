@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lonelydubai/Model/AllTours.dart';
 import 'package:http/http.dart' as http;
+import 'package:lonelydubai/Model/LoginUser.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Themes/AppTheme.dart';
@@ -23,103 +23,46 @@ class _BookTourState extends State<BookTour> {
   final _phoneNumberController = TextEditingController();
   final _nOPController = TextEditingController();
 
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPassword = TextEditingController();
+  bool userLogged = false;
+  bool isObscure = true;
+  bool passwordVisible = true;
+  bool isSignUpVisible = false;
+  bool isLoginVisible = false;
+
   late String date;
   late DateTime selectedDate;
   bool isLoading = false;
 
-  bookTour(String name, String phoneNumber, String tourName, String date,
-      String numOfPersons, String booking_price) async {
-    var totalPrice = int.parse(numOfPersons) * int.parse(booking_price);
-    showLoadingDialog();
-    var client = http.Client();
-    final prefs = await SharedPreferences.getInstance();
-
-    var token = prefs.getString('key');
-    client
-        .post(
-      Uri.parse(
-          "https://lonelydubai.com/booking/public/api/createCustomer?customer_name=$name&mobile_no=$phoneNumber&tours=$tourName&number_of_person=$numOfPersons&date=$date&status=in-processing&booking_price=$totalPrice"),
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
-      },
-      encoding: Encoding.getByName("utf-8"),
-    )
-        .then((response) {
-      if (response.statusCode == 200) {
-        if (isLoading) {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-        showMessageDialog("assets/icons/success.svg",
-            "Tour Booked!\n Our team will update you soon.", Colors.green);
-      }
-    });
-  }
-
-  showLoadingDialog() {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          isLoading = true;
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)), //this right here
-            child: Container(
-                height: 200,
-                child: Center(
-                    child: Lottie.asset('assets/animations/loading.json',
-                        height: 60.0))),
-          );
-        }).then((_) => isLoading = false);
-  }
-
-  showMessageDialog(String imagePath, String message, Color color) {
-    showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)), //this right here
-            child: SizedBox(
-                height: 200,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 30),
-                        child: SvgPicture.asset(
-                          imagePath,
-                          height: 45,
-                          color: color,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                          margin: const EdgeInsets.only(
-                              top: 40, left: 20, right: 20),
-                          child: Text(
-                            message,
-                            style:
-                                TextStyle(fontSize: 16, color: AppTheme.black),
-                            textAlign: TextAlign.center,
-                          )),
-                    )
-                  ],
-                )),
-          );
-        });
-  }
-
   @override
-  void initState() {
+  initState() {
     selectedDate = DateTime.now();
     date = selectedDate.toString().substring(0, 10);
+    userLoggedIn();
     super.initState();
+  }
+
+  void userLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    var logged = prefs.getBool('user_logged');
+    if (logged != null) {
+      if (logged) {
+        userLogged = true;
+        setState(() {});
+      } else {
+        userLogged = false;
+        setState(() {});
+      }
+    }
+    else{
+      userLogged = false;
+      setState(() {});
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -142,8 +85,8 @@ class _BookTourState extends State<BookTour> {
           );
         },
         initialDate: selectedDate,
-        firstDate: DateTime(2022, 1),
-        lastDate: DateTime(2101));
+        firstDate: DateTime.now().subtract(const Duration(days: 1)),
+        lastDate: DateTime.now().add(const Duration(days: 31)));
     if (picked != null && picked != date) {
       setState(() {
         selectedDate = picked;
@@ -188,10 +131,15 @@ class _BookTourState extends State<BookTour> {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
                 )),
-                const SizedBox(
-                  height: 50,
-                  width: 50,
-                )
+                userLogged
+                    ? IconButton(
+                        icon: Icon(Icons.person_sharp),
+                        onPressed: () {},
+                      )
+                    : const SizedBox(
+                        height: 50,
+                        width: 50,
+                      )
               ],
             ),
             Expanded(
@@ -335,7 +283,9 @@ class _BookTourState extends State<BookTour> {
                           side: const BorderSide(
                               color: Colors.white, width: 1.5)),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          _selectDate(context);
+                        },
                         child: Container(
                           height: MediaQuery.of(context).size.shortestSide < 550
                               ? 45.0
@@ -426,39 +376,21 @@ class _BookTourState extends State<BookTour> {
                         child: TextButton(
                           onPressed: () {
                             if (_fullNameController.text.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                elevation: 8.0,
-                                behavior: SnackBarBehavior.floating,
-                                margin: EdgeInsets.all(10.0),
-                                content: Text("Enter your Full Name."),
-                                backgroundColor: Colors.red,
-                              ));
+                              showMessageDialog("assets/icons/error.svg",
+                                  "Enter your full name!", Colors.red);
                               return;
                             }
 
                             if (_phoneNumberController.text.isEmpty ||
                                 _phoneNumberController.text.length < 13) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                elevation: 8.0,
-                                behavior: SnackBarBehavior.floating,
-                                margin: EdgeInsets.all(10.0),
-                                content: Text("Enter valid Phone Number."),
-                                backgroundColor: Colors.red,
-                              ));
+                              showMessageDialog("assets/icons/error.svg",
+                                  "Enter valid phone number!", Colors.red);
                               return;
                             }
 
                             if (_nOPController.text.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                elevation: 8.0,
-                                behavior: SnackBarBehavior.floating,
-                                margin: EdgeInsets.all(10.0),
-                                content: Text("Enter number of persons."),
-                                backgroundColor: Colors.red,
-                              ));
+                              showMessageDialog("assets/icons/error.svg",
+                                  "Enter number of persons!", Colors.red);
                               return;
                             }
 
@@ -468,9 +400,8 @@ class _BookTourState extends State<BookTour> {
                                 widget.bookTour.postTitle,
                                 date,
                                 _nOPController.text.toString(),
-                                widget.bookTour.tourNotIncluded.isNotEmpty
-                                    ? widget.bookTour.tourDiscountPrice[0]
-                                    : widget.bookTour.tourPrice[0]);
+                                widget.bookTour.tourPrice[0],
+                                widget.bookTour.tourBookingPrice[0]);
                           },
                           child: Text(
                             "Book Tour",
@@ -502,6 +433,762 @@ class _BookTourState extends State<BookTour> {
         ),
       ),
     );
+  }
+
+  showLoginDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          isLoginVisible = true;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              //this right here
+              child: Container(
+                  constraints: const BoxConstraints(maxHeight: 370),
+                  padding: const EdgeInsets.all(20.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.only(bottom: 20.0),
+                            child: const Text("Sign In",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                        Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                  margin: const EdgeInsets.only(top: 5.0),
+                                  child: SvgPicture.asset(
+                                    "assets/icons/mail_icon.svg",
+                                    height: 30,
+                                    color: Colors.grey,
+                                  )),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 30.0),
+                                height: 40,
+                                width: double.infinity,
+                                child: TextField(
+                                  controller: email,
+                                  style: TextStyle(
+                                      fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                              550
+                                          ? 15.0
+                                          : 17.0),
+                                  cursorColor: AppTheme.black,
+                                  decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 0.0,
+                                          right: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0),
+                                      hintText: 'jhondoe@gmail.com',
+                                      hintStyle: TextStyle(color: Colors.grey)),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          margin: MediaQuery.of(context).size.shortestSide < 550
+                              ? const EdgeInsets.only(top: 10.0)
+                              : const EdgeInsets.only(top: 20.0),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    margin: const EdgeInsets.only(top: 15.0),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/lock_icon.svg",
+                                      height: 20,
+                                      color: Colors.grey,
+                                    )),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 30.0),
+                                  height: 40,
+                                  width: double.infinity,
+                                  child: TextField(
+                                    controller: password,
+                                    obscureText: isObscure,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    style: TextStyle(
+                                        fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 15.0
+                                            : 17.0),
+                                    cursorColor: AppTheme.black,
+                                    decoration: InputDecoration(
+                                        suffix: IconButton(
+                                            onPressed: () {
+                                              if (isObscure) {
+                                                setState(() {
+                                                  isObscure = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  isObscure = true;
+                                                });
+                                              }
+                                            },
+                                            icon: isObscure
+                                                ? const Icon(
+                                                    Icons
+                                                        .visibility_off_outlined,
+                                                    size: 20,
+                                                  )
+                                                : const Icon(
+                                                    Icons.visibility_outlined,
+                                                    size: 20,
+                                                  )),
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 0.0,
+                                            right: 0.0,
+                                            top: 0.0,
+                                            bottom: 3.0),
+                                        hintText: 'Password',
+                                        hintStyle: const TextStyle(
+                                            color: Colors.grey)),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                              width: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20.0, bottom: 10.0, left: 20.0),
+                                child: Text(
+                                  "Forgot Password ?",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                              550
+                                          ? 14
+                                          : 16),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 40,
+                          margin: const EdgeInsets.only(top: 20.0),
+                          child: TextButton(
+                            onPressed: () {
+                              if (email.text.trim().isEmpty ||
+                                  !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(email.text.trim())) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Enter valid email!", Colors.red);
+
+                                return;
+                              }
+                              if (password.text.trim().isEmpty) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Enter valid password!", Colors.red);
+
+                                return;
+                              }
+                              loginUser(email.text.toString(),
+                                  password.text.toString());
+                            },
+                            child: Text(
+                              "Sign In",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 18),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            style: TextButton.styleFrom(
+                                padding: const EdgeInsets.only(
+                                    left: 5.0, right: 5.0),
+                                primary: Colors.white,
+                                backgroundColor: AppTheme.pink),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Text(
+                            "Don't have an account ?",
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.shortestSide <
+                                            550
+                                        ? 15
+                                        : 18),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (isLoginVisible) {
+                              Navigator.of(context, rootNavigator: true).pop();
+                            }
+                            showSignUpDialog();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 10.0, top: 10.0, bottom: 10.0),
+                            child: Text(
+                              "Create new one",
+                              style: TextStyle(
+                                  color: AppTheme.pink,
+                                  fontSize:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 15
+                                          : 18),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
+            );
+          });
+        }).then((_) => isSignUpVisible = false);
+  }
+
+  showSignUpDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          isSignUpVisible = true;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              //this right here
+              child: Container(
+                  constraints: const BoxConstraints(maxHeight: 370),
+                  padding: const EdgeInsets.all(20.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: const EdgeInsets.only(bottom: 20.0),
+                            child: const Text("Sign Up",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                        Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                  margin: const EdgeInsets.only(top: 10.0),
+                                  child: SvgPicture.asset(
+                                    "assets/icons/mail_icon.svg",
+                                    height: 30,
+                                    color: Colors.grey,
+                                  )),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 30.0),
+                                height: 40,
+                                width: double.infinity,
+                                child: TextField(
+                                  controller: emailController,
+                                  style: TextStyle(
+                                      fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .shortestSide <
+                                              550
+                                          ? 15.0
+                                          : 17.0),
+                                  cursorColor: AppTheme.black,
+                                  decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 0.0,
+                                          right: 0.0,
+                                          top: 0.0,
+                                          bottom: 0.0),
+                                      hintText: 'jhondoe@mail.com',
+                                      hintStyle: TextStyle(color: Colors.grey)),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          margin: MediaQuery.of(context).size.shortestSide < 550
+                              ? const EdgeInsets.only(top: 10.0)
+                              : const EdgeInsets.only(top: 20.0),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    margin: const EdgeInsets.only(top: 15.0),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/person.svg",
+                                      height: 20,
+                                      color: Colors.grey,
+                                    )),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 30.0),
+                                  height: 40,
+                                  width: double.infinity,
+                                  child: TextField(
+                                    controller: nameController,
+                                    style: TextStyle(
+                                        fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 15.0
+                                            : 17.0),
+                                    cursorColor: AppTheme.black,
+                                    decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 0.0,
+                                            right: 0.0,
+                                            top: 0.0,
+                                            bottom: 0.0),
+                                        hintText: 'Jhondoe',
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey)),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: MediaQuery.of(context).size.shortestSide < 550
+                              ? const EdgeInsets.only(top: 10.0)
+                              : const EdgeInsets.only(top: 20.0),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    margin: const EdgeInsets.only(top: 15.0),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/lock_icon.svg",
+                                      height: 20,
+                                      color: Colors.grey,
+                                    )),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 30.0),
+                                  height: 40,
+                                  width: double.infinity,
+                                  child: TextField(
+                                    controller: passwordController,
+                                    obscureText: passwordVisible,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    style: TextStyle(
+                                        fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 15.0
+                                            : 17.0),
+                                    cursorColor: AppTheme.black,
+                                    decoration: InputDecoration(
+                                        suffix: IconButton(
+                                            onPressed: () {
+                                              if (passwordVisible) {
+                                                setState(() {
+                                                  passwordVisible = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  passwordVisible = true;
+                                                });
+                                              }
+                                            },
+                                            icon: passwordVisible
+                                                ? const Icon(
+                                                    Icons
+                                                        .visibility_off_outlined,
+                                                    size: 20,
+                                                  )
+                                                : const Icon(
+                                                    Icons.visibility_outlined,
+                                                    size: 20,
+                                                  )),
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 0.0,
+                                            right: 0.0,
+                                            top: 0.0,
+                                            bottom: 0.0),
+                                        hintText: 'Password',
+                                        hintStyle: const TextStyle(
+                                            color: Colors.grey)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: MediaQuery.of(context).size.shortestSide < 550
+                              ? const EdgeInsets.only(top: 10.0)
+                              : const EdgeInsets.only(top: 20.0),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    margin: const EdgeInsets.only(top: 15.0),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/lock_icon.svg",
+                                      height: 20,
+                                      color: Colors.grey,
+                                    )),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 30.0),
+                                  height: 40,
+                                  width: double.infinity,
+                                  child: TextField(
+                                    controller: confirmPassword,
+                                    obscureText: passwordVisible,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    style: TextStyle(
+                                        fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .shortestSide <
+                                                550
+                                            ? 15.0
+                                            : 17.0),
+                                    cursorColor: AppTheme.black,
+                                    decoration: InputDecoration(
+                                        suffix: IconButton(
+                                            onPressed: () {
+                                              if (passwordVisible) {
+                                                setState(() {
+                                                  passwordVisible = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  passwordVisible = true;
+                                                });
+                                              }
+                                            },
+                                            icon: passwordVisible
+                                                ? const Icon(
+                                                    Icons
+                                                        .visibility_off_outlined,
+                                                    size: 20,
+                                                  )
+                                                : const Icon(
+                                                    Icons.visibility_outlined,
+                                                    size: 20,
+                                                  )),
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 0.0,
+                                            right: 0.0,
+                                            top: 0.0,
+                                            bottom: 0.0),
+                                        hintText: 'Confirm Password',
+                                        hintStyle: const TextStyle(
+                                            color: Colors.grey)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 40,
+                          margin:
+                              const EdgeInsets.only(top: 30.0, bottom: 50.0),
+                          child: TextButton(
+                            onPressed: () {
+                              if (nameController.text.isEmpty) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Enter your name!", Colors.red);
+
+                                return;
+                              }
+
+                              if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      .hasMatch(emailController.text.trim()) ||
+                                  emailController.text.isEmpty) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Enter valid email!", Colors.red);
+
+                                return;
+                              }
+                              if (passwordController.text.isEmpty) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Enter valid password!", Colors.red);
+
+                                return;
+                              }
+
+                              if (confirmPassword.text.isEmpty) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Enter valid password!", Colors.red);
+                                return;
+                              }
+
+                              if (passwordController.text.trim().length < 5 ||
+                                  confirmPassword.text.trim().length < 5) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Choose a strong password!", Colors.red);
+
+                                return;
+                              }
+                              if (passwordController.text !=
+                                  confirmPassword.text) {
+                                showMessageDialog("assets/icons/error.svg",
+                                    "Passwords should be same!", Colors.red);
+
+                                return;
+                              }
+
+                              registerUser(
+                                  nameController.text.toString().trim(),
+                                  emailController.text.toString().trim(),
+                                  passwordController.text.toString().trim());
+                            },
+                            child: const Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            style: TextButton.styleFrom(
+                                padding: const EdgeInsets.only(
+                                    left: 5.0, right: 5.0),
+                                primary: Colors.white,
+                                backgroundColor: AppTheme.pink),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            );
+          });
+        }).then((_) => isSignUpVisible = false);
+  }
+
+  showLoadingDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          isLoading = true;
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: SizedBox(
+                height: 200,
+                child: Center(
+                    child: Lottie.asset('assets/animations/loading.json',
+                        height: 60.0))),
+          );
+        }).then((_) => isLoading = false);
+  }
+
+  registerUser(String fullName, String emailAddress, String passKey) async {
+    showLoadingDialog();
+    var client = http.Client();
+    String registerUrl =
+        "https://lonelydubai.com/booking/public/api/createUser?name=$fullName&email=$emailAddress&password=$passKey&conf_password=$passKey&roles=guest";
+    try {
+      var response = await client.post(Uri.parse(registerUrl));
+      if (response.statusCode == 201) {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        if (isSignUpVisible) {
+          Navigator.of(context, rootNavigator: true).pop();
+          showLoginDialog();
+        }
+        showMessageDialog("assets/icons/success.svg",
+            "User Registered!\n Please login to continue", Colors.green);
+      } else if (response.statusCode == 401) {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        showMessageDialog(
+            "assets/icons/error.svg", "Email already exists!", Colors.red);
+      }
+    } on Exception {
+      if (isLoading) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+      showMessageDialog("assets/icons/error.svg", "Server Error", Colors.red);
+    }
+  }
+
+  showMessageDialog(String imagePath, String message, Color color) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: SizedBox(
+                height: 200,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: SvgPicture.asset(
+                          imagePath,
+                          height: 45,
+                          color: color,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          margin: const EdgeInsets.only(
+                              top: 40, left: 20, right: 20),
+                          child: Text(
+                            message,
+                            style:
+                                TextStyle(fontSize: 16, color: AppTheme.black),
+                            textAlign: TextAlign.center,
+                          )),
+                    )
+                  ],
+                )),
+          );
+        });
+  }
+
+  loginUser(String email, String password) async {
+    showLoadingDialog();
+    String loginUrl =
+        "https://lonelydubai.com/booking/public/api/login?email=$email&password=$password";
+    var client = http.Client();
+
+    try {
+      var response = await client.post(Uri.parse(loginUrl));
+      if (response.statusCode == 200) {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        var jsonString = response.body;
+        LoginUser loginUser;
+        loginUser = loginUserFromJson(jsonString);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('key', loginUser.success);
+        await prefs.setString('username', loginUser.name);
+        await prefs.setString('email', loginUser.email);
+        await prefs.setInt('id', loginUser.userId);
+        await prefs.setBool('user_logged', true);
+        setState(() {
+          userLogged = true;
+        });
+        if (isLoginVisible) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+      } else if (response.statusCode == 401) {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+          showMessageDialog("assets/icons/error.svg",
+              "Incorrect username/password", Colors.red);
+        }
+      } else {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+          showMessageDialog("assets/icons/error.svg",
+              "Unable to login.\nPlease try again later!", Colors.red);
+        }
+      }
+    } on Exception {
+      if (isLoading) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+      showMessageDialog("assets/icons/error.svg", "Server error", Colors.red);
+    }
+  }
+
+  bookTour(String name, String phoneNumber, String tourName, String date,
+      String numOfPersons, String tour_price, String booking_price) async {
+    var totalPrice = int.parse(numOfPersons) * int.parse(tour_price);
+    var bookingPrice = int.parse(numOfPersons) * int.parse(booking_price);
+    var profit = totalPrice - bookingPrice;
+
+    var client = http.Client();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('key');
+    if (token == null) {
+      showLoginDialog();
+      return;
+    }
+    showLoadingDialog();
+
+    client
+        .post(
+      Uri.parse(
+          "https://lonelydubai.com/booking/public/api/createCustomer?customer_name=$name&mobile_no=$phoneNumber&tours=$tourName&number_of_person=$numOfPersons&date=$date&status=in-processing&payment=$totalPrice&profite=$profit&booking_price=$bookingPrice"),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      encoding: Encoding.getByName("utf-8"),
+    )
+        .then((response) {
+      if (response.statusCode == 200) {
+        if (isLoading) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+        showMessageDialog("assets/icons/success.svg",
+            "Tour Booked!\n Our team will update you soon.", Colors.green);
+      }
+    });
   }
 }
 

@@ -4,11 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lonelydubai/Model/AllTours.dart';
 import 'package:lonelydubai/Screens/BookTour.dart';
-
 import '../Themes/AppTheme.dart';
-
 class TourDetails extends StatefulWidget {
   AllTours tourDetails;
+
 
   TourDetails(this.tourDetails, {Key? key}) : super(key: key);
 
@@ -45,6 +44,7 @@ class _TourDetailsState extends State<TourDetails> {
           }
         }
       }
+
     });
     super.initState();
   }
@@ -66,14 +66,28 @@ class _TourDetailsState extends State<TourDetails> {
                   ? Container(
                       child: Stack(
                         children: [
-                          Align(
+                          Stack(children: [
+                            Align(
                               alignment: Alignment.topCenter,
                               child: CachedNetworkImage(
                                 imageUrl: widget.tourDetails.tourImage,
                                 height: 270.0,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                              )),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Image.asset(
+                                "assets/images/gradient.png",
+                                height: 270,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+
+                          ],),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Container(
@@ -133,7 +147,7 @@ class _TourDetailsState extends State<TourDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
+                  _showAppbar?Padding(
                     padding: const EdgeInsets.only(left: 15.0, top: 8.0),
                     child: Text(
                       widget.tourDetails.postTitle,
@@ -142,7 +156,7 @@ class _TourDetailsState extends State<TourDetails> {
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
-                  ),
+                  ):Container(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,7 +167,7 @@ class _TourDetailsState extends State<TourDetails> {
                             padding:
                                 const EdgeInsets.only(left: 15.0, top: 8.0),
                             child: Text(
-                              "from",
+                              "Price",
                               style: TextStyle(
                                   fontSize:
                                       MediaQuery.of(context).size.shortestSide <
@@ -164,44 +178,9 @@ class _TourDetailsState extends State<TourDetails> {
                           ),
                           Column(
                             children: [
-                              widget.tourDetails.tourDiscountPrice.isNotEmpty
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, top: 12.0),
-                                      child: Text(
-                                        "AED " +
-                                            widget.tourDetails.tourPrice[0],
-                                        style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .shortestSide <
-                                                    550
-                                                ? 12
-                                                : 15,
-                                            color: AppTheme.charcoal,
-                                            decoration:
-                                                TextDecoration.lineThrough),
-                                      ),
-                                    )
-                                  : Container(),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
-                                child: widget.tourDetails.tourDiscountPrice
-                                        .isNotEmpty
-                                    ? Text(
-                                        "AED " +
-                                            widget.tourDetails
-                                                .tourDiscountPrice[0],
-                                        style: TextStyle(
-                                            fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .shortestSide <
-                                                    550
-                                                ? 18
-                                                : 22,
-                                            color: AppTheme.pink),
-                                      )
-                                    : Padding(
+                                child: Padding(
                                         padding: EdgeInsets.only(top: 8.0),
                                         child: Text(
                                           "AED " +
@@ -260,17 +239,10 @@ class _TourDetailsState extends State<TourDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         tabItem("assets/icons/clock.svg",
-                            widget.tourDetails.tourDays[0] + " Days"),
+                            widget.tourDetails.tourDays[0] + " Hours"),
                         tabItem("assets/icons/address_card.svg",
                             "Age " + widget.tourDetails.tourMinAge[0] + "+"),
-                        tabItem("assets/icons/person.svg",
-                            widget.tourDetails.tourAvailability[0]),
-                        widget.tourDetails.tourDiscountPrice.isNotEmpty
-                            ? tabItem(
-                                "assets/icons/money.svg",
-                                "AED " +
-                                    widget.tourDetails.tourDiscountPrice[0])
-                            : tabItem("assets/icons/money.svg",
+                        tabItem("assets/icons/money.svg",
                                 "AED " + widget.tourDetails.tourPrice[0])
                       ],
                     ),
@@ -279,7 +251,7 @@ class _TourDetailsState extends State<TourDetails> {
                     padding: const EdgeInsets.only(
                         left: 20.0, top: 0.0, bottom: 0.0),
                     child: Text(
-                      "Details ",
+                      "About Tour ",
                       style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.shortestSide < 550
@@ -304,7 +276,7 @@ class _TourDetailsState extends State<TourDetails> {
                     padding: const EdgeInsets.only(
                         left: 20.0, top: 5.0, bottom: 5.0),
                     child: Text(
-                      "Instructions",
+                      "Details",
                       style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.shortestSide < 550
@@ -411,7 +383,7 @@ class _TourDetailsState extends State<TourDetails> {
                     margin: const EdgeInsets.only(
                         left: 20.0, right: 20.0, top: 8.0),
                     child: Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                       constraints: BoxConstraints(
                           minHeight:
                               MediaQuery.of(context).size.shortestSide < 550
@@ -576,6 +548,7 @@ class _TourDetailsState extends State<TourDetails> {
                       ),
                     ),
                   ),
+                  Container(height: 200)
                 ],
               ),
             ))
@@ -611,7 +584,6 @@ class _TourDetailsState extends State<TourDetails> {
       ),
     );
   }
-
   @override
   void dispose() {
     _scrollViewController.removeListener(() {});

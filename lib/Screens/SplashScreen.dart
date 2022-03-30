@@ -1,8 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lottie/lottie.dart';
 
-import 'LoginScreen.dart';
 import 'MainTabScreen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,23 +13,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void toMainScreen() async {
-    final prefs = await SharedPreferences.getInstance();
-    final bool? logged = prefs.getBool('user_logged');
-    if (logged != null) {
-      if (logged) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const MainTabScreen()));
-      } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
-      }
-    } else {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
-    }
-  }
-
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -58,22 +41,26 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           Align(
+              alignment: Alignment.center,
+              child: Container(
+                  margin: const EdgeInsets.only(left: 30.0, right: 40.0),
+                  child: Lottie.asset('assets/animations/splash_anim.json'))),
+          Align(
             alignment: Alignment.center,
             child: TweenAnimationBuilder<double>(
                 tween: Tween<double>(begin: 0.0, end: 1.0),
                 curve: Curves.ease,
                 onEnd: () {
-                  toMainScreen();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainTabScreen()));
                 },
                 duration: const Duration(seconds: 3),
                 builder: (BuildContext context, double opacity, Widget? child) {
                   return Container(
                     margin: const EdgeInsets.all(50),
-                    child: Opacity(
-                        opacity: opacity,
-                        child: Image.asset(
-                          "assets/images/logo.png",
-                        )),
+                    child: Opacity(opacity: opacity, child: Container()),
                   );
                 }),
           )

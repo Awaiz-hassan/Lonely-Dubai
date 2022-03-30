@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lonelydubai/Screens/LoginScreen.dart';
-import 'package:lonelydubai/Screens/MainTabScreen.dart';
 import 'package:lonelydubai/Screens/SplashScreen.dart';
 import 'package:lonelydubai/Themes/AppTheme.dart';
 

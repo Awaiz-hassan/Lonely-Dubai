@@ -79,15 +79,28 @@ class _HomeScreenState extends State<HomeScreen>
                   ? Container(
                       child: Stack(
                         children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Image.asset(
-                              "assets/images/dubai.webp",
-                              height: 270,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                          Stack(children: [
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Image.asset(
+                                "assets/images/dubai.webp",
+                                height: 270,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Image.asset(
+                                "assets/images/gradient.png",
+                                height: 270,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+
+                          ],),
                           Align(
                             alignment: Alignment.topCenter,
                             child: Padding(
@@ -116,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen>
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               margin:
-                                  const EdgeInsets.only(left: 20, right: 20),
+                                  const EdgeInsets.only(left: 15, right: 15),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -127,27 +140,37 @@ class _HomeScreenState extends State<HomeScreen>
                                 },
                                 child: Card(
                                     color: Colors.white,
-                                    elevation: 5.0,
+                                    elevation: 2.0,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0),
                                         side: const BorderSide(
                                             color: Colors.white, width: 1.5)),
-                                    child: const SizedBox(
+                                    child:  SizedBox(
                                       height: 40.0,
                                       child: SizedBox.expand(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10.0,
-                                              left: 10.0,
-                                              right: 10.0),
-                                          child: Text(
-                                            "Where you want to go?",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.grey),
+                                        child: Row(children:  [
+                                          Container(
+                                            margin:const EdgeInsets.only(left: 10.0),
+                                            child: const Icon(
+                                              Icons.search,
+                                              color: Colors.grey,
+                                              size: 20.0,
+                                            ),
                                           ),
-                                        ),
+                                          const Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 0.0,
+                                                left: 5.0,
+                                                right: 10.0),
+                                            child: Text(
+                                              "Where you want to go?",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey),
+                                            ),
+                                          )
+                                        ],),
                                       ),
                                     )),
                               ),
@@ -211,14 +234,14 @@ class _TopDestinationsState extends State<TopDestinations> {
     return Container(
       height: MediaQuery.of(context).size.shortestSide < 550 ? 300 : 315,
       margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.shortestSide < 550 ? 0.0 : 5.0,
-          right: MediaQuery.of(context).size.shortestSide < 550 ? 0.0 : 5.0,
-          top: MediaQuery.of(context).size.shortestSide < 550 ? 0.0 : 10.0),
+          left: MediaQuery.of(context).size.shortestSide < 550 ? 10.0 : 5.0,
+          right: MediaQuery.of(context).size.shortestSide < 550 ? 10.0 : 5.0,
+          top: MediaQuery.of(context).size.shortestSide < 550 ? 10.0 : 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 10,top: 8.0,bottom: 8.0),
             child: Text(
               "Top Destinations",
               style: TextStyle(
@@ -342,13 +365,14 @@ class _TopToursState extends State<TopTours> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.shortestSide < 550 ? 510 : 530,
-      margin: const EdgeInsets.only(left: 5, right: 5),
+      height: MediaQuery.of(context).size.shortestSide < 550 ? 500 : 530,
+      margin: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  const EdgeInsets.only(
+          left: 12.0, top: 5.0, right: 10.0),
             child: Text(
               "Top Tours",
               style: TextStyle(
@@ -631,29 +655,7 @@ class _BestDhoCruiseState extends State<BestDhoCruiseTour> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(4.0),
-                                              child: _dhowCruiseController
-                                                      .dhowCruiseList[index]
-                                                      .tourDiscountPrice
-                                                      .isNotEmpty
-                                                  ? Text(
-                                                      "AED " +
-                                                          _dhowCruiseController
-                                                              .dhowCruiseList[
-                                                                  index]
-                                                              .tourDiscountPrice[0],
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .shortestSide <
-                                                                  550
-                                                              ? 12.0
-                                                              : 16),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )
-                                                  : Text(
+                                              child: Text(
                                                       "AED " +
                                                           _dhowCruiseController
                                                               .dhowCruiseList[
@@ -700,8 +702,8 @@ class _DesertSafariState extends State<DesertSafariTour> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.shortestSide < 550 ? 10 : 20,
-          right: MediaQuery.of(context).size.shortestSide < 550 ? 10 : 20),
+          left: MediaQuery.of(context).size.shortestSide < 550 ? 15 : 20,
+          right: MediaQuery.of(context).size.shortestSide < 550 ? 15 : 20),
       constraints: const BoxConstraints(minHeight: 500),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -758,152 +760,134 @@ class _DesertSafariState extends State<DesertSafariTour> {
                         ),
                       ),
                     )
-                  : ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount:
-                          _dubaiSafariController.dubaiSafariToursList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TourDetails(
-                                        _dubaiSafariController
-                                            .dubaiSafariToursList[index])));
-                          },
-                          child: Card(
-                            margin: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.shortestSide <
-                                        550
-                                    ? 5.0
-                                    : 10.0,
-                                bottom:
-                                    MediaQuery.of(context).size.shortestSide <
-                                            550
-                                        ? 5.0
-                                        : 10.0),
-                            child: SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.shortestSide < 550
-                                      ? 110
-                                      : 200,
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        child: Stack(
-                                          children: [
-                                            CachedNetworkImage(
-                                              imageUrl: _dubaiSafariController
-                                                  .dubaiSafariToursList[index]
-                                                  .tourImage,
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                            ),
-                                            Container(
-                                              height: double.infinity,
-                                              width: double.infinity,
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                            )
-                                          ],
-                                        )),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 15.0, bottom: 5.0, right: 5.0),
-                                      decoration: BoxDecoration(
-                                          color: AppTheme.pink,
-                                          borderRadius: const BorderRadius.only(
-                                              topRight: Radius.circular(3.0),
-                                              bottomRight:
-                                                  Radius.circular(3.0))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: _dubaiSafariController
-                                                .dubaiSafariToursList[index]
-                                                .tourDiscountPrice
-                                                .isNotEmpty
-                                            ? Text(
-                                                "AED " +
-                                                    _dubaiSafariController
-                                                        .dubaiSafariToursList[
-                                                            index]
-                                                        .tourDiscountPrice[0],
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .shortestSide <
-                                                            550
-                                                        ? 12
-                                                        : 16),
-                                                overflow: TextOverflow.ellipsis,
-                                              )
-                                            : Text(
-                                                "AED " +
-                                                    _dubaiSafariController
-                                                        .dubaiSafariToursList[
-                                                            index]
-                                                        .tourPrice[0],
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .shortestSide <
-                                                            550
-                                                        ? 12
-                                                        : 16),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                      ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      height: 80,
-                                      margin: const EdgeInsets.only(
-                                          top: 60, left: 50.0, right: 50.0),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(
+                  : Container(
+            height: 605,
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:
+                            _dubaiSafariController.dubaiSafariToursList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TourDetails(
                                           _dubaiSafariController
-                                              .dubaiSafariToursList[index]
-                                              .postTitle,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: MediaQuery.of(context)
-                                                          .size
-                                                          .shortestSide <
-                                                      550
-                                                  ? 13
-                                                  : 23,
-                                              fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                              .dubaiSafariToursList[index])));
+                            },
+                            child: Card(
+                              margin: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.shortestSide <
+                                          550
+                                      ? 5.0
+                                      : 10.0,
+                                  bottom:
+                                      MediaQuery.of(context).size.shortestSide <
+                                              550
+                                          ? 5.0
+                                          : 10.0),
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.shortestSide < 550
+                                        ? 140
+                                        : 200,
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                          child: Stack(
+                                            children: [
+                                              CachedNetworkImage(
+                                                imageUrl: _dubaiSafariController
+                                                    .dubaiSafariToursList[index]
+                                                    .tourImage,
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                              ),
+                                              Container(
+                                                height: double.infinity,
+                                                width: double.infinity,
+                                                color:
+                                                    Colors.black.withOpacity(0.5),
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(
+                                            top: 15.0, bottom: 5.0, right: 5.0),
+                                        decoration: BoxDecoration(
+                                            color: AppTheme.pink,
+                                            borderRadius: const BorderRadius.only(
+                                                topRight: Radius.circular(3.0),
+                                                bottomRight:
+                                                    Radius.circular(3.0))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                                  "AED " +
+                                                      _dubaiSafariController
+                                                          .dubaiSafariToursList[
+                                                              index]
+                                                          .tourPrice[0],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .shortestSide <
+                                                              550
+                                                          ? 12
+                                                          : 16),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        height: 80,
+                                        margin: const EdgeInsets.only(
+                                            top: 60, left: 50.0, right: 50.0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            _dubaiSafariController
+                                                .dubaiSafariToursList[index]
+                                                .postTitle,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: MediaQuery.of(context)
+                                                            .size
+                                                            .shortestSide <
+                                                        550
+                                                    ? 16
+                                                    : 23,
+                                                fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    )),
+                          );
+                        },
+                      ),
+                  )),
         ],
       ),
     );

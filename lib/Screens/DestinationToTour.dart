@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -74,14 +75,28 @@ class _DestinationToTourState extends State<DestinationToTour> {
                   ? Container(
                       child: Stack(
                         children: [
-                          Align(
-                              alignment: Alignment.topCenter,
-                              child: CachedNetworkImage(
-                                imageUrl: widget.imageUrl,
-                                height: 270.0,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              )),
+                          Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.imageUrl,
+                                  height: 270.0,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Image.asset(
+                                  "assets/images/gradient.png",
+                                  height: 270,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ],
+                          ),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Container(
@@ -100,7 +115,8 @@ class _DestinationToTourState extends State<DestinationToTour> {
                             alignment: Alignment.bottomLeft,
                             child: Container(
                                 margin: const EdgeInsets.only(
-                                    bottom: 80, left: 30, right: 30),
+                                    bottom: 60, left: 30, right: 30),
+                                width: double.infinity,
                                 child: Text(
                                   widget.destinationName,
                                   style: const TextStyle(
@@ -109,13 +125,14 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                       fontSize: 25),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
                                 )),
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               margin:
-                                  const EdgeInsets.only(left: 20, right: 20),
+                                  const EdgeInsets.only(left: 15, right: 15),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -126,26 +143,39 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                 },
                                 child: Card(
                                     color: Colors.white,
-                                    elevation: 5.0,
+                                    elevation: 2.0,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(5.0),
                                         side: const BorderSide(
                                             color: Colors.white, width: 1.5)),
-                                    child: const SizedBox(
+                                    child: SizedBox(
                                       height: 40.0,
                                       child: SizedBox.expand(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10.0,
-                                              left: 10.0,
-                                              right: 10.0),
-                                          child: Text(
-                                            "Where you want to go?",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.grey),
-                                          ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 10.0),
+                                              child: const Icon(
+                                                Icons.search,
+                                                color: Colors.grey,
+                                                size: 20.0,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 0.0,
+                                                  left: 5.0,
+                                                  right: 10.0),
+                                              child: Text(
+                                                "Where you want to go?",
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
                                     )),
@@ -192,12 +222,16 @@ class _DestinationToTourState extends State<DestinationToTour> {
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.shortestSide < 550
-                        ? 10.0
-                        : 15.0,
-                    right: MediaQuery.of(context).size.shortestSide < 550
-                        ? 10.0
-                        : 15.0),
+                  left: MediaQuery.of(context).size.shortestSide < 550
+                      ? 10.0
+                      : 15.0,
+                  right: MediaQuery.of(context).size.shortestSide < 550
+                      ? 10.0
+                      : 15.0,
+                  top: MediaQuery.of(context).size.shortestSide < 550
+                      ? 10.0
+                      : 15.0,
+                ),
                 child: FutureBuilder(
                     future: _destinationTours,
                     builder: (BuildContext ctx,
@@ -216,160 +250,153 @@ class _DestinationToTourState extends State<DestinationToTour> {
                                         crossAxisCount: 2),
                                 itemCount: snapshot.data?.length,
                                 itemBuilder: (BuildContext ctx, index) {
-                                  return Container(
-                                      margin: const EdgeInsets.all(5.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                            child: CachedNetworkImage(
-                                              imageUrl: snapshot
-                                                  .data![index].tourImage,
-                                              fit: BoxFit.fill,
-                                              width: double.infinity,
-                                              height: MediaQuery.of(context)
-                                                          .size
-                                                          .shortestSide <
-                                                      550
-                                                  ? 150.0
-                                                  : 200.0,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              height: MediaQuery.of(context)
-                                                          .size
-                                                          .shortestSide <
-                                                      550
-                                                  ? 35.0
-                                                  : 45.0,
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 5.0,
-                                                          left: 5.0,
-                                                          right: 5.0),
-                                                  child: Text(
-                                                    snapshot
-                                                        .data![index].postTitle,
-                                                    maxLines: 2,
-                                                    style: TextStyle(
-                                                        fontSize: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .shortestSide <
-                                                                550
-                                                            ? 12.0
-                                                            : 16.0,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ))),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Flexible(
-                                                  child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: snapshot
-                                                        .data![index]
-                                                        .tourDiscountPrice
-                                                        .isNotEmpty
-                                                    ? Text(
-                                                        "AED " +
-                                                            snapshot
-                                                                .data![index]
-                                                                .tourDiscountPrice[0],
-                                                        style: TextStyle(
-                                                            color:
-                                                                AppTheme.pink,
-                                                            fontSize: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .shortestSide <
-                                                                    550
-                                                                ? 12.0
-                                                                : 16.0,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      )
-                                                    : Text(
-                                                        "AED " +
-                                                            snapshot
-                                                                .data![index]
-                                                                .tourPrice[0],
-                                                        style: TextStyle(
-                                                            color:
-                                                                AppTheme.pink,
-                                                            fontSize: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .shortestSide <
-                                                                    550
-                                                                ? 12.0
-                                                                : 16.0,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                              )),
-                                              Container(
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => TourDetails(
+                                                  snapshot.data![index])));
+                                    },
+                                    child: Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 5.0,
+                                            bottom: 5.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0),
+                                              child: CachedNetworkImage(
+                                                imageUrl: snapshot
+                                                    .data![index].tourImage,
+                                                fit: BoxFit.fill,
+                                                width: double.infinity,
                                                 height: MediaQuery.of(context)
                                                             .size
                                                             .shortestSide <
                                                         550
-                                                    ? 25
-                                                    : 35.0,
-                                                width: MediaQuery.of(context)
-                                                            .size
-                                                            .shortestSide <
-                                                        550
-                                                    ? 80
-                                                    : 110.0,
-                                                margin: const EdgeInsets.only(
-                                                    top: 10),
-                                                child: TextButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                TourDetails(snapshot
-                                                                        .data![
-                                                                    index])));
-                                                  },
-                                                  child: const Text(
-                                                    "Book Now",
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    ? 150.0
+                                                    : 200.0,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                // height: MediaQuery.of(context)
+                                                //             .size
+                                                //             .shortestSide <
+                                                //         550
+                                                //     ? 35.0
+                                                //     : 45.0,
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5.0,
+                                                            left: 5.0,
+                                                            right: 5.0),
+                                                    child: Text(
+                                                      snapshot.data![index]
+                                                          .postTitle,
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                          fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .shortestSide <
+                                                                  550
+                                                              ? 12.0
+                                                              : 16.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ))),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Flexible(
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 4.0,
+                                                          right: 4.0,
+                                                          top: 8),
+                                                  child: Text(
+                                                          "AED " +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .tourPrice[0],
+                                                          style: TextStyle(
+                                                              color:
+                                                                  AppTheme.pink,
+                                                              fontSize: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .shortestSide <
+                                                                      550
+                                                                  ? 12.0
+                                                                  : 16.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                )),
+                                                Container(
+                                                  height: MediaQuery.of(context)
+                                                              .size
+                                                              .shortestSide <
+                                                          550
+                                                      ? 25
+                                                      : 35.0,
+                                                  width: MediaQuery.of(context)
+                                                              .size
+                                                              .shortestSide <
+                                                          550
+                                                      ? 80
+                                                      : 110.0,
+                                                  margin: const EdgeInsets.only(
+                                                      top: 10),
+                                                  child: TextButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  TourDetails(snapshot
+                                                                          .data![
+                                                                      index])));
+                                                    },
+                                                    child: const Text(
+                                                      "View",
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    style: TextButton.styleFrom(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 5.0,
+                                                                right: 5.0),
+                                                        primary: Colors.white,
+                                                        backgroundColor:
+                                                            AppTheme.pink),
                                                   ),
-                                                  style: TextButton.styleFrom(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 5.0,
-                                                              right: 5.0),
-                                                      primary: Colors.white,
-                                                      backgroundColor:
-                                                          AppTheme.pink),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ));
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        )),
+                                  );
                                 })
                             : Center(
                                 child: Lottie.asset(

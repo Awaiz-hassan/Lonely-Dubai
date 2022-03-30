@@ -30,7 +30,7 @@ class AllTours {
     required this.tourMinAge,
     required this.tourInclude,
     required this.tourNotIncluded,
-    required this.tourDiscountPrice,
+    required this.tourBookingPrice,
   });
 
   int id;
@@ -53,7 +53,7 @@ class AllTours {
   List<String> tourMinAge;
   List<List<String>> tourInclude;
   List<List<String>> tourNotIncluded;
-  List<dynamic> tourDiscountPrice;
+  List<String> tourBookingPrice;
 
   factory AllTours.fromJson(Map<String, dynamic> json) => AllTours(
     id: json["ID"],
@@ -76,7 +76,7 @@ class AllTours {
     tourMinAge: List<String>.from(json["tour_min_age"].map((x) => x)),
     tourInclude: List<List<String>>.from(json["tour_include"].map((x) => List<String>.from(x.map((x) => x)))),
     tourNotIncluded: List<List<String>>.from(json["tour_not_included"].map((x) => List<String>.from(x.map((x) => x)))),
-    tourDiscountPrice: List<dynamic>.from(json["tour_discount_price"].map((x) => x)),
+    tourBookingPrice: List<String>.from(json["tour_booking_price"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -100,6 +100,6 @@ class AllTours {
     "tour_min_age": List<dynamic>.from(tourMinAge.map((x) => x)),
     "tour_include": List<dynamic>.from(tourInclude.map((x) => List<dynamic>.from(x.map((x) => x)))),
     "tour_not_included": List<dynamic>.from(tourNotIncluded.map((x) => List<dynamic>.from(x.map((x) => x)))),
-    "tour_discount_price": List<dynamic>.from(tourDiscountPrice.map((x) => x)),
+    "tour_booking_price": List<dynamic>.from(tourBookingPrice.map((x) => x)),
   };
 }
